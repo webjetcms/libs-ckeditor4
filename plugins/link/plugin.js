@@ -218,10 +218,10 @@
 
 	// Loads the parameters in a selected link to the link dialog fields.
 	var javascriptProtocolRegex = /^javascript:/,
-		emailRegex = /^(?:mailto)(?:(?!\?(subject|body)=).)+/i,
-		emailSubjectRegex = /subject=([^;?:@&=$,\/]*)/i,
-		emailBodyRegex = /body=([^;?:@&=$,\/]*)/i,
-		anchorRegex = /^#(.*)$/,
+		emailRegex = /^WEBJETmailto:([^?]+)(?:\?(.+))?$/,
+		emailSubjectRegex = /subject=([^;?:@&=$,\/]*)/,
+		emailBodyRegex = /body=([^;?:@&=$,\/]*)/,
+		anchorRegex = /^WEBJET#(.*)$/,
 		urlRegex = /^((?:http|https|ftp|news):\/\/)?(.*)$/,
 		selectableTargets = /^(_(?:self|top|parent|blank))$/,
 		encodedEmailLinkRegex = /^javascript:void\(location\.href='mailto:'\+String\.fromCharCode\(([^)]+)\)(?:\+'(.*)')?\)$/,
@@ -633,7 +633,8 @@
 					var protocol = ( data.url && data.url.protocol !== undefined ) ? data.url.protocol : 'http://',
 						url = ( data.url && CKEDITOR.tools.trim( data.url.url ) ) || '';
 
-					set[ 'data-cke-saved-href' ] = ( url.indexOf( '/' ) === 0 ) ? url : protocol + url;
+					set[ 'data-cke-saved-href' ] = ( url.indexOf( '/' ) === 0 || url.indexOf( 'mailto' ) === 0 ) ? url : protocol + url;
+
 					break;
 
 				case 'anchor':

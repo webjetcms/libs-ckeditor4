@@ -176,7 +176,7 @@ CKEDITOR.dialog.add( 'select', function( editor ) {
 			title: editor.lang.forms.select.selectInfo,
 			accessKey: '',
 			elements: [ {
-				id: 'txtName',
+				id: '_cke_saved_name',
 				type: 'text',
 				widths: [ '25%', '75%' ],
 				labelLayout: 'horizontal',

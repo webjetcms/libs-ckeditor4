@@ -420,3 +420,108 @@ a.cke_toolbox_collapser
 	margin-top: 0;
 	margin-right: 2px;
 }
+
+/******* WEBJET ZMENY *******/
+.cke_top { background: #f5f5f5/*edeff1*/ !important; padding: 16px 8px 15px !important; border-bottom: 2px solid #e5eef9 !important; }
+.cke_chrome { border: 0px none !important; }
+.cke_toolbar { border-right: 1px solid #edeff1 !important; }
+.cke_bottom { background: #e5eef9 !important; }
+
+a.cke_button__components, a.cke_button__paste, a.cke_button__image, a.cke_button__inlinepublish { height: 44px; }
+a.cke_button__components span, a.cke_button__inlinepublish span { height: 44px; width: 40px; background-size: auto !important; }
+a.cke_button__htmlbox span { height: 44px; width: 40px; background-size: auto !important; }
+a.cke_button__paste span { height: 44px; width: 40px; background-size: auto !important; background-image: url(/components/_common/admin/inline/editor-paste.gif) !important; background-position: 0px 0px !important;}
+span.cke_toolbar span.cke_toolgroup span.cke_button_icon.cke_button__paste_icon { background: url(/components/_common/admin/inline/editor-paste.gif) no-repeat 0 0 !important; }
+a.cke_button__image span, .cke_hidpi span.cke_button__image_icon { height: 44px; width: 40px; background-size: auto !important; background-image: url(/components/_common/admin/inline/editor-image.gif) !important; background-position: 0px 0px !important; }
+a.cke_button__smiley { clear: both; }
+
+span.cke_toolbar a.cke_button__webjetmediagallerybutton { height: 44px; width: 40px; background-image: url(/components/_common/admin/inline/editor-image.gif) !important; background-repeat: no-repeat; background-position: 10px center !important;}
+
+.cke_toolbar_col {  }
+.cke_toolbar_row { clear: both; display: block; height: auto; width: auto; margin: 0px; float: auto; }
+
+.cke_toolbar { height: 65px; border-right: 1px solid #a6a6a6; padding-right: 4px; margin-right: 4px; }
+.cke_toolbox .cke_toolbar:last-child { border-right-width: 0px !important; margin-right: 0px; }
+.cke_toolgroup { border: 0px; background: none; box-shadow: none; }
+.cke_combo_text { width: 167px !important; }
+.cke_combopanel { width: 195px !important; }
+.cke_combo_off a.cke_combo_button:hover, .cke_combo_off a.cke_combo_button:focus
+{
+	border: 1px solid #a6a6a6;
+	text-decoration: none;
+}
+
+span.cke_toolbar { position: relative; }
+span.cke_toolbar span.cke_voice_label { display: block; position: absolute; top: 55px; font-size: 9px; color: #7b7b7b; height: 0px; width: 100%; text-align: center; }
+a.cke_button_off:hover,
+a.cke_button_off:focus,
+a.cke_button_off:active,
+a.cke_button_disabled:hover,
+a.cke_button_disabled:focus,
+a.cke_button_disabled:active
+{
+	box-shadow: none;
+	text-decoration: none;
+	background-image: none;
+}
+a.cke_button { height: auto; min-height: 18px; 	transform: translateZ(0px); }
+a.cke_button:hover { background-color: transparent; }
+
+a.cke_button::before {
+    background: none repeat scroll 0 0 #29c01a;
+    bottom: 0;
+    content: "";
+    height: 3px;
+    left: 50%;
+    position: absolute;
+    right: 50%;
+    transition-duration: 0.25s;
+    transition-property: left, right;
+    transition-timing-function: ease-out;
+}
+a.cke_button:hover::before, a.cke_button:focus::before, a.cke_button:active::before
+{
+    left: 0;
+    right: 0;
+}
+
+
+.cke_toolgroup { margin-right: 0px !important; }
+
+
+span.cke_floatingtools span.cke_toolbar { height: auto; padding-right: 4px; margin-right: 4px; }
+span.cke_floatingtools { padding: 3px !important; border: 1px solid #F7CA18 !important; background-color: #fceba9 !important; overflow: visible; }
+span.cke_floatingtools span.cke_toolgroup { margin-bottom: 0px; }
+span.cke_floatingtools span.cke_toolgroup a.cke_combo_button {margin-bottom: 0px; background-color: white; }
+span.cke_floatingtools span.cke_toolbar { border-right-width: 0px !important; margin-right: 0px; padding-right: 0px; }
+span.cke_floatingtools:before
+{
+	width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid #F7CA18;
+   content: " ";
+   position: absolute;
+   bottom: -10px;
+   left: 50%;
+   margin-left: -10px;
+}
+span.cke_floatingtools:after
+{
+	width: 0; height: 0; border-left: 9px solid transparent; border-right: 9px solid transparent; border-top: 9px solid #fceba9;
+   content: " ";
+   position: absolute;
+   bottom: -9px;
+   left: 50%;
+   margin-left: -9px;
+}
+span.cke_floatingtools span.cke_toolbar span.cke_voice_label { display: none; }
+
+span.cke_toolbox span.cke_toolbar { z-index: 101; background-color: #f5f5f5; }
+
+.cke_top { background: #f5f5f5/*edeff1*/ !important; padding: 0px !important; border-bottom: 2px solid #e5eef9 !important; }
+.cke_chrome { border: 0px none !important; }
+.cke_toolbar { border-right: 1px solid #edeff1 !important; }
+.cke_bottom { background: #e5eef9 !important; }
+/* toto ma position relative kvoli inline toolbaru a schovaniu sa za */
+.cke_top span.cke_toolbox { padding: 16px 8px 15px !important; background-color: #f5f5f5; display: block; min-height: 60px; width: 100%; position: relative; z-index: 101; }
+.cke_focus { outline: none; }
+
+span.cke_floatingtools { z-index: 999; }

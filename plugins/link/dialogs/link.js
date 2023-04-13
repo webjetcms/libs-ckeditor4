@@ -35,6 +35,12 @@
 
 			style.type = CKEDITOR.STYLE_INLINE; // need to override... dunno why.
 
+			//WebJET: ak je URL na inu stranku alebo subor, dopln rel atribut
+			var newHref = attributes.set['href'];
+			if(newHref.indexOf('http')==0 || newHref.indexOf('www.')==0) {
+				attributes.set['rel'] = "nofollow noopener noreferrer";
+			}
+
 			for ( i = 0; i < ranges.length; i++ ) {
 				range = ranges[ i ];
 
@@ -84,6 +90,12 @@
 				href,
 				newText,
 				i;
+
+			//WebJET: ak je URL na inu stranku alebo subor, dopln rel atribut
+			var newHref = attributes.set['href'];
+			if(newHref.indexOf('http')==0 || newHref.indexOf('www.')==0) {
+				attributes.set['rel'] = "nofollow noopener noreferrer";
+			}
 
 			for ( i = 0; i < selectedElements.length; i++ ) {
 				// We're only editing an existing link, so just overwrite the attributes.

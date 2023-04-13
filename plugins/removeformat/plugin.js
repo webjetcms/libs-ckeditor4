@@ -35,7 +35,32 @@ CKEDITOR.plugins.removeformat = {
 					range;
 
 				while ( ( range = iterator.getNextRange() ) ) {
-					range.enlarge( CKEDITOR.ENLARGE_INLINE );
+
+					//console.log("range=", range);
+					//WebJET - doplnene mazanie stylov kliknutim napr. do P elementu
+					//<p class="btn btn-primary" style="color: orange">Prvy <em style="color:blue">odstavec</em></p>
+					if (range.collapsed)
+					{
+						try {
+							var node = range.getCommonAncestor().$.parentElement;
+							//console.log("node 1=", node, " outer=", node.OuterHtml);
+							for (var i=0; i<removeAttributes.length; i++) {
+								node.removeAttribute(removeAttributes[i]);
+							}
+							var tagName = node.$.tagName.toLowerCase();
+							if (tagName=="em" || tagName=="strong" || tagName=="sub"|| tagName=="sup")
+							{
+								node.$.outerHTML=node.$.innerText;
+							}
+						}
+						catch (e) {
+							console.log(e);
+						}
+						return;
+					}
+
+					if ( !range.collapsed )
+						range.enlarge( CKEDITOR.ENLARGE_ELEMENT );
 
 					// Bookmark the range so we can re-select it after processing.
 					var bookmark = range.createBookmark(),

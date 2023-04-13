@@ -40,7 +40,7 @@ CKEDITOR.dialog.add( 'radio', function( editor ) {
 			label: editor.lang.forms.checkboxAndRadio.radioTitle,
 			title: editor.lang.forms.checkboxAndRadio.radioTitle,
 			elements: [ {
-				id: 'name',
+				id: '_cke_saved_name',
 				type: 'text',
 				label: editor.lang.common.name,
 				'default': '',
