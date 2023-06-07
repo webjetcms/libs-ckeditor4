@@ -124,7 +124,11 @@ else
 			if (Tools.isNotEmpty(doc.getVirtualPath())) {
 				request.setAttribute("path_filter_orig_path", doc.getVirtualPath());
 				RequestBean rb = SetCharacterEncodingFilter.getCurrentRequestBean();
-				if (rb != null) rb.setUrl(doc.getVirtualPath());
+				if (rb != null) {
+					rb.setUrl(doc.getVirtualPath());
+					rb.setDocId(doc.getDocId());
+            		rb.setGroupId(doc.getGroupId());
+				}
 			}
 
 			request.setAttribute("doc_id", Integer.valueOf(doc.getDocId()));
