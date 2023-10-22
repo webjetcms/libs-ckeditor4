@@ -10,7 +10,7 @@
 			quickClass = conf.qtClass || '',
 			quickCellPadding = conf.qtCellPadding || '1',
 			quickCellSpacing = conf.qtCellSpacing || '1',
-			quickWidth = conf.qtWidth || '500px',
+			quickWidth = conf.qtWidth || '100%',
 			quickPreviewSize = conf.qtPreviewSize || '14px',
 			quickPreviewBorder = conf.qtPreviewBorder || '1px solid #aaa',
 			quickPreviewBackground = conf.qtPreviewBackground || '#e5e5e5';

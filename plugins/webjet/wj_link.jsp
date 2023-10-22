@@ -171,7 +171,7 @@
 
 				// url : 'php/connector.php',
 				url : '<iwcm:cp/>/admin/elfinder-connector/',
-            enableByMouseOver: false,
+            	enableByMouseOver: false,
 				width: '100%',
 				height: 430,
 				resizable: false,
@@ -234,22 +234,24 @@
 				commands : [
 		                    'fileopen', 'dirprops', 'fileprops', 'open', 'reload', 'home', 'up', 'back', 'forward', 'getfile', 'quicklook',
 		                    'download', 'rm', 'duplicate', 'rename', 'mkdir', 'mkfile', 'upload', 'copy',
-		                    'cut', 'paste', 'edit', 'extract', 'archive', 'search', 'info', 'view', 'help', 'resize', 'sort', 'netmount', 'fileupdate'
+		                    'cut', 'paste', 'edit', 'extract', 'archive', 'search', 'info', 'view', 'help', 'resize', 'sort', 'netmount', 'fileupdate', 'wjsearch'
 		                    <% if (Constants.getBoolean("elfinderMetadataEnabled")) { %>,'wjmetadata'<% } %>
 		                ],
-            contextmenu : {
-            	files  : ['edit', 'fileopen', 'fileupdate', '|', 'quicklook', '|', 'download', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'rename', 'resize', '|', 'archive', 'extract', '|', 'info', 'fileprops', 'dirprops'<% if (Constants.getBoolean("elfinderMetadataEnabled")) { %>, 'wjmetadata'<% } %>]
-            },
+				contextmenu : {
+					files  : ['edit', 'fileopen', 'fileupdate', '|', 'quicklook', '|', 'download', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'rename', 'resize', '|', 'archive', 'extract', '|', 'info', 'fileprops', 'dirprops'<% if (Constants.getBoolean("elfinderMetadataEnabled")) { %>, 'wjmetadata'<% } %>]
+				},
 
 				ui: ['toolbar', /*'places',*/ 'tree', 'path', 'stat'],
 
 				uiOptions : {
 					toolbar : [
-		           ['back', 'forward'],
-		           ['paste', 'cut', 'copy'],
-		           ['upload', 'mkdir', 'reload' /*'mkfile', */],
+						['back', 'forward'],
+						['paste', 'cut', 'copy'],
+						['upload', 'mkdir', 'reload' /*'mkfile', */],
 
-		           ['view', 'sort']
+						['view', 'sort'],
+
+						['wjsearch']
 					]
 				}
 			}).elfinder('instance');
