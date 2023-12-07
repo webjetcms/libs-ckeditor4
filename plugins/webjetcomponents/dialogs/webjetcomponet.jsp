@@ -113,8 +113,6 @@ body { overflow: hidden; }
                     .after($('<input type="hidden" id="className" />').val(c))
                     .after($('<input type="hidden" id="parameters" />').val(parameters));
                 iframe.attr('src', src);
-
-                $('.cke_dialog_title', window.parent.document).hide();
                 return;
             }
         }

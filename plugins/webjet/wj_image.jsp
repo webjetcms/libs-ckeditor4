@@ -133,6 +133,7 @@
 		var lastDocId = -1;
 		var lastGroupId = -1;
 		var lastVirtualPath = "";
+		var lastTitle = "";
 		var elfinder;
 		var elFinderInstance;
 
@@ -142,17 +143,18 @@
 			var groupId = window.parent.getCkEditorInstance().element.$.form.groupId.value;
 			var virtualPath = window.parent.getCkEditorInstance().element.$.form.virtualPath.value;
 
-
 			//console.log("Initializing elfinder, docid="+docId+" groupId="+groupId);
 
 			lastDocId = docId;
 			lastGroupId = groupId;
             lastVirtualPath = virtualPath;
+			lastTitle = getPageNavbar();
 
 			var customData = {
 					volumes : "images",
 					docId: docId,
-					groupId: groupId
+					groupId: groupId,
+					title: getPageNavbar()
 			}
 
 			var file = $('#txtUrl').val();
@@ -164,7 +166,7 @@
 			if (file != "") {
 				customData.startPath = file.substring(0, file.lastIndexOf('/'));
 			}
-			//console.log(customData);
+			//console.log("Init customData=", customData);
 
 			elfinder = $('#finder').elfinder({
 				// requestType : 'post',
@@ -288,7 +290,8 @@
 			var customData = {
 					volumes : "images",
 					docId: docId,
-					groupId: groupId
+					groupId: groupId,
+					title: getPageNavbar()
 			}
 
 			var file = $('#txtUrl').val();
@@ -302,7 +305,7 @@
 			{
 				customData.startPath = file.substring(0, file.lastIndexOf('/'));
 			}
-			//console.log(customData);
+			//console.log("Update elfinder customData", customData);
 
 			elfinder.options.customData = customData;
 
@@ -314,13 +317,13 @@
 			//zvol prvy element v "Aktualna stranka"
 			var openTimeout = 100;
 			var reload = false
-			if (lastDocId != docId || lastGroupId != groupId || virtualPath != lastVirtualPath)
+			if (lastDocId != docId || lastGroupId != groupId || virtualPath != lastVirtualPath || getPageNavbar() != lastTitle)
 			{
 			    //console.log("RELOADING, virtualPath="+virtualPath+" lastVirtualPath="+lastVirtualPath);
 				reload = true;
 				openTimeout = 500;
 			}
-			if (reload || file == "")
+			if (reload)
 			{
                 setTimeout(function() {
                     openDefaultImageFolder(reload);
@@ -330,6 +333,7 @@
             lastDocId = docId;
             lastGroupId = groupId;
             lastVirtualPath = virtualPath;
+			lastTitle = getPageNavbar();
 
             //console.log("FILE2="+file);
 			if (file != "")

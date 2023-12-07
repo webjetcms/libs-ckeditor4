@@ -55,10 +55,18 @@ if (Tools.isNotEmpty(Tools.getRequestParameterUnsafe(request, "encodedComponentC
 	componentCode = new String(b64.decode(encodedComponentCode.getBytes()));
 }
 //out.print("--sdsdas" + Tools.URLDecode(componentCode) + "--");
-if (componentCode==null)
+boolean showForm = true;
+
+if ("POST".equals(request.getMethod().toUpperCase())) showForm = false;
+//if there is no correct refefer dismiss HTML code
+String referer = request.getHeader("Referer");
+if (referer == null || referer.contains("component_preview.jsp")==false) showForm = true;
+
+//out.print("--sdsdas" + Tools.URLDecode(componentCode) + "--");
+if (showForm)
 {
 	sk.iway.iwcm.PathFilter.setStaticContentHeaders("/cache/a-component-preview.js", null, request, response);
-%>
+	%>
 	<html>
 	<head></head>
 	<body>
@@ -109,14 +117,14 @@ if (componentCode==null)
 		</script>
 	</body>
 	</html>
-<%
+	<%
 }
 else
 {
 	request.setAttribute("componentCode", componentCode);
 
-		if (docId > 0)
-		{
+	if (docId > 0)
+	{
 		DocDetails doc = DocDB.getInstance().getDoc(docId);
 		if (doc != null)
 		{
@@ -272,6 +280,9 @@ else
 			div.inlineComponentButtonsWrapper div.inlineComponentButtons:after { top: -9px; border-top: 0px; border-bottom: 9px solid #fceba9; }
 			div.inlineComponentEdit, div.inlineComponentEdit > div.inlineComponentButtonsWrapper { z-index: 99999; }
 			div.inlineComponentEdit { cursor: help; }
+			div.deviceInfo span.deviceInfoTitle {
+				font-weight: bold;
+			}
 		</style>
 		<% if (FileTools.isFile("/jscripts/common.js")) { %>
 		<script type="text/javascript" src="/jscripts/common.js"></script>
@@ -468,6 +479,22 @@ else
 					</div>
 				</div>
 			</div>
+
+			<%
+			String device = myPageParams.getValue("device", null);
+			if (Tools.isNotEmpty(device)) {
+				Prop prop = Prop.getInstance(lng);
+				device = Tools.replace(device, "pc", prop.getText("apps.devices.pc"));
+				device = Tools.replace(device, "tablet", prop.getText("apps.devices.tablet"));
+				device = Tools.replace(device, "phone", prop.getText("apps.devices.phone"));
+				%>
+				<div class="deviceInfo">
+					<span class="deviceInfoTitle"><iwcm:text key="apps.devices.title"/>:</span>
+					<span class="deviceInfoTypes"><%=device%></span>
+				</div>
+				<%
+			}
+			%>
 
 			<div id="componentCodeDiv">
 				<iwcm:write name="componentCode"/>

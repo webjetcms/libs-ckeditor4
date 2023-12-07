@@ -70,7 +70,7 @@ panel contents and color panels check menu.css and colorpanel.css.
 .cke_combopanel
 {
     width: 150px;
-    height: 170px;
+    height: 280px;
 }
 
 /* The IFRAME the panel is wrapped into. */

@@ -105,6 +105,7 @@
 		var lastDocId = -1;
 		var lastGroupId = -1;
         var lastVirtualPath = "";
+		var lastTitle = "";
         var elFinderInstance;
 
 		function checkSelectionText()
@@ -151,11 +152,13 @@
             lastDocId = docId;
             lastGroupId = groupId;
             lastVirtualPath = virtualPath;
+			lastTitle = getPageNavbar();
 
             var customData = {
                 volumes : "link",
                 docId: docId,
-                groupId: groupId
+                groupId: groupId,
+				title: getPageNavbar()
             }
 
             var file = $('#txtUrl').val();
@@ -385,7 +388,8 @@
             var customData = {
                 volumes : "link",
                 docId: docId,
-                groupId: groupId
+                groupId: groupId,
+				title: getPageNavbar()
             }
 
             var file = $('#txtUrl').val();
@@ -401,12 +405,12 @@
 			//console.log("elFinder custom data: docId="+docId+" groupId="+groupId);
             var openTimeout = 100;
             var reload = false
-            if (lastDocId != docId || lastGroupId != groupId || virtualPath != lastVirtualPath)
+            if (lastDocId != docId || lastGroupId != groupId || virtualPath != lastVirtualPath || lastTitle != getPageNavbar())
             {
                 reload = true;
                 openTimeout = 500;
             }
-            if (reload || file == "")
+            if (reload)
             {
                 openDefaultImageFolder(reload);
             }
@@ -414,6 +418,7 @@
             lastDocId = docId;
             lastGroupId = groupId;
             lastVirtualPath = virtualPath;
+			lastTitle = getPageNavbar();
 
             if (file != "")
             {
