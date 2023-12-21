@@ -331,7 +331,7 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
                 		// sme v editore
                 		el = $('.cke_wysiwyg_frame').contents().find("#WebJETEditorBody");
 					}
-					el.removeClass('ge-layout-mobile');
+					el.removeClass('ge-layout-phone');
                 	el.removeClass('ge-layout-tablet');
 				}
             }
@@ -361,7 +361,7 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
                         // sme v editore
                         el = $('.cke_wysiwyg_frame').contents().find("#WebJETEditorBody");
                     }
-                    el.removeClass('ge-layout-mobile');
+                    el.removeClass('ge-layout-phone');
                     el.addClass('ge-layout-tablet');
                 }
             }
@@ -391,7 +391,7 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
                         // sme v editore
                         el = $('.cke_wysiwyg_frame').contents().find("#WebJETEditorBody");
                     }
-                    el.addClass('ge-layout-mobile');
+                    el.addClass('ge-layout-phone');
                     el.removeClass('ge-layout-tablet');
                 }
             }
@@ -406,8 +406,8 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
 				'webjethtmlboxDialog',
 				editor.lang.webjetcomponents.templates,
 				this.path	+ 'dialogs/webjetcomponet.jsp?componentName=htmlbox',
-				900,
-				680,
+				976,
+				565,
 				function()
 				{
 					// Iframe loaded callback.
@@ -426,7 +426,8 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
 							//console.log("Parent height: ", height);
 							$("#"+that._.contents.iframe.undefined.domId).css("min-height", height+"px");
 						}, 2000);
-						this.resize(900, 680);
+						this.resize(976, 565);
+						//this.resize(900, 680);
 						//--this.move(10, 10);
 					},
 					onOk : function()
