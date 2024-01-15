@@ -459,7 +459,7 @@
 		<table class="urlFormTable">
 			<tr>
 				<td style="width: 80px;" title="<iwcm:text key="elfinder.image.urlTitle"/>"><iwcm:text key="components.groupEdit.url_info"/>:</td>
-				<td><input id="txtUrl" style="width: 100%; outline: none !important;" type="text" onkeyup="txtUrlOnChange(this);" /></td>
+				<td><input id="txtUrl" style="width: 100%; outline: none !important; border: 1px solid; height: 22px;" type="text" onkeyup="txtUrlOnChange(this);" /></td>
 			</tr>
 		</table>
 	</div>

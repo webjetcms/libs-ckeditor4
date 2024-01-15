@@ -38,6 +38,9 @@
 				msg = ( notification && typeof notification === 'string' ) ? notification : lang.pastetext.pasteNotification
 					.replace( /%1/, '<kbd aria-label="' + keyInfo.aria + '">' + keyInfo.display + '</kbd>' );
 
+			//WebJET CMS - always show paste dialog
+			editor._.forcePasteDialog = true;
+
 			editor.execCommand( 'paste', {
 				type: 'text',
 				notification: notification ? msg : false

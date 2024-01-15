@@ -1,5 +1,5 @@
 <%@ page pageEncoding="utf-8" contentType="text/javascript" import="sk.iway.iwcm.*,sk.iway.iwcm.stat.*" %><%
-	sk.iway.iwcm.Encoding.setResponseEnc(request, response, "text/javascript"); 
+	sk.iway.iwcm.Encoding.setResponseEnc(request, response, "text/javascript");
 	sk.iway.iwcm.PathFilter.setStaticContentHeaders("/cache/common.js", null, request, response);
 %>
 <%@ taglib uri="/WEB-INF/iway.tld" prefix="iway" %>
@@ -8,19 +8,19 @@
 /*
  * FCKeditor - The text editor for internet
  * Copyright (C) 2003-2004 Frederico Caldeira Knabben
- * 
+ *
  * Licensed under the terms of the GNU Lesser General Public License:
  * 		http://www.opensource.org/licenses/lgpl-license.php
- * 
+ *
  * For further information visit:
  * 		http://www.fckeditor.net/
- * 
+ *
  * File Name: fck_dialog_common.js
  * 	Useful functions used by almost all dialog window pages.
- * 
+ *
  * Version:  2.0 RC1
  * Modified: 2004-11-23 17:21:15
- * 
+ *
  * File Authors:
  * 		Frederico Caldeira Knabben (fredck@fckeditor.net)
  */
@@ -60,7 +60,7 @@ function SetClassCombo(elementName, value)
 				return;
 			}
 		}
-		
+
 		var o = new Option(value, value, true, true);
 		select.options[select.options.length] = o;
 	}
@@ -75,17 +75,17 @@ function SetAttribute( element, attName, attValue )
 
    //element.removeAttribute(attName, 0) ;
    //window.alert("removed: " + attName + "=" + element.getAttribute( attName ) );
-   
+
    if (attName.indexOf("on")==0)
 	{
 		attValue = attValue.replace(/'/gi, "\"");
-		var atrName = attName+"_fckprotectedatt";				
+		var atrName = attName+"_fckprotectedatt";
 		var atrValue = " "+attName+"='"+attValue+"'";
-		
+
 		element.setAttribute(atrName, atrValue);
 		return;
 	}
-   
+
    //skus to nastavit ako CSS atribut
    var attCssName = getAttCssName(attName);
    //window.alert("attName="+attName+"css="+attCssName);
@@ -105,7 +105,7 @@ function SetAttribute( element, attName, attValue )
  			    attCssName = "verticalAlign";
  			 }
           }
-      
+
           var cssAttValue = attValue;
           if ( attValue == null || attValue.length == 0 )
           {
@@ -113,21 +113,21 @@ function SetAttribute( element, attName, attValue )
           }
           var evalCmd = "element.style."+attCssName+"='"+cssAttValue+"';";
 		  eval(evalCmd);
-		  
+
 		  //WebJET - uprava zarovnania CSS stylu obrazku na Ziadne (ak pred tym bolo nejake vertical)
 		  if (attName=="align" && element.tagName=="IMG" && attValue=="")
-		  {			  
+		  {
 			  evalCmd = "element.style.verticalAlign='';";
 			  eval(evalCmd);
 		  }
-		  
+
 		  try
 		  {
 		  	element.removeAttribute( attName, 0 ) ;
 		  }
 		  catch (exc2)
 		  {
-		  
+
 		  }
 		  return;
 	  }
@@ -148,7 +148,7 @@ function SetAttribute( element, attName, attValue )
    }
    catch (ex3)
    {
-   
+
    }
 
 }
@@ -159,7 +159,7 @@ function GetAttribute( element, attName, valueIfNull )
    {
       valueIfNull = "";
    }
-   
+
    if (attName.indexOf("on")==0)
 	{
 		//ziskaj protected hodnotu
@@ -168,7 +168,7 @@ function GetAttribute( element, attName, valueIfNull )
 		value = value.substring(name.length+3, value.length-1);
 		return value;
 	}
-   
+
    var attCssName = getAttCssName(attName);
    if (attCssName != null)
    {
@@ -177,7 +177,7 @@ function GetAttribute( element, attName, valueIfNull )
          if (navigator.userAgent.indexOf("Gecko")!=-1) attCssName = "cssFloat";
          else attCssName = "styleFloat";
       }
-   
+
       var value = null;
 	  //window.alert("getAttr CSS: "+attName+" css="+attCssName);
 	  eval("value=element.style."+attCssName+";");
@@ -185,7 +185,7 @@ function GetAttribute( element, attName, valueIfNull )
 	  {
 	  	return(value);
 	  }
-	  
+
 	  if (attName=="align" && element.tagName=="IMG")
       {
          attCssName = "verticalAlign";
@@ -197,16 +197,16 @@ function GetAttribute( element, attName, valueIfNull )
 		 }
       }
    }
-   
+
    try
    {
-		var oAtt = element.attributes[attName] ;		
+		var oAtt = element.attributes[attName] ;
 		if ( oAtt == null || !oAtt.specified ) return valueIfNull ;
 		else return oAtt.value;
-   } catch (ex) {}	
-   
+   } catch (ex) {}
+
 	var oValue = element.getAttribute( attName, 2 ) ;
-	
+
 	return ( oValue == null ? valueIfNull : oValue ) ;
 }
 
@@ -266,7 +266,7 @@ function getWjAtr(node, name)
 	if (name=="style")
 	{
 		return node.style.cssText;
-		
+
 	}
 	//Firefox/3
 	if (name=="className" && navigator.userAgent.indexOf("Firefox/3")!=-1)
@@ -274,7 +274,7 @@ function getWjAtr(node, name)
 		name = "class";
 	}
 	var value = node.getAttribute(name, 2);
-	if (value == null) value = ""; 
+	if (value == null) value = "";
 	return value;
 }
 
@@ -292,9 +292,9 @@ function setWjAtr(node, name, value)
 			{
 				//value = value.replace(/"/gi, "&quot;");
 				value = value.replace(/'/gi, "\"");
-				var atrName = name+"_fckprotectedatt";				
+				var atrName = name+"_fckprotectedatt";
 				var atrValue = " "+name+"='"+value+"'";
-				
+
 				node.setAttribute(atrName, atrValue);
 			}
 			else
@@ -334,7 +334,7 @@ function getAttributeCss(element, attName, attCssName, valueIfNull)
   if (value == null || value.length==0)
   {
      value = GetAttribute(element, attName, valueIfNull);
-  } 
+  }
   return(value);
 }
 
@@ -346,13 +346,13 @@ String.prototype.startsWith = function( value )
 String.prototype.remove = function( start, length )
 {
 	var s = '' ;
-	
+
 	if ( start > 0 )
 		s = this.substring( 0, start ) ;
-	
+
 	if ( start + length < this.length )
 		s += this.substring( start + length , this.length ) ;
-		
+
 	return s ;
 }
 
@@ -401,19 +401,19 @@ function setDialogTitle(text)
 function CreateElement( tag, atrs, parentNode )
 {
    var e = null;
-   
+
    if (navigator.userAgent.toLowerCase().indexOf("msie")!=-1) e = FCK.EditorDocument.createElement("<"+tag+" "+atrs+">") ;
    else e = FCK.EditorDocument.createElement(tag) ;
-   
+
    e.setAttribute( '__FCKTempLabel', '1' ) ;
-   
+
    //window.alert("parentNode="+parentNode.cellIndex+" tag="+tag+" atrs="+atrs);
-   
+
    if (parentNode != undefined && parentNode != null) parentNode.appendChild( e ) ;
    else FCK.InsertElement( e ) ;
-   
+
    var aEls = FCK.EditorDocument.getElementsByTagName( tag ) ;
-   
+
    for ( i = 0 ; i < aEls.length ; i++ )
    {
       if ( aEls[i].attributes['__FCKTempLabel'] )
@@ -425,41 +425,41 @@ function CreateElement( tag, atrs, parentNode )
 }
 
 
-//WebJET - odstranenie diakritiky 
-function internationalToEnglish(text) 
-{ 
-  var Diacritic =   "áäčďéěíĺľňóôőöŕšťúůűüýřžÁÄČĎÉĚÍĹĽŇÓÔŐÖŔŠŤÚŮŰÜÝŘŽ "; 
+//WebJET - odstranenie diakritiky
+function internationalToEnglish(text)
+{
+  var Diacritic =   "áäčďéěíĺľňóôőöŕšťúůűüýřžÁÄČĎÉĚÍĹĽŇÓÔŐÖŔŠŤÚŮŰÜÝŘŽ ";
   var DiacRemoved = "aacdeeillnoooorstuuuuyrzAACDEEILLNOOOORSTUUUUYRZ-";
-	
-  var ptext=""; // pomocná proměnná  
-  for(i=0;i < text.length;i++) 
-  {// projít zadaný text po znaku 
-    if (Diacritic.indexOf(text.charAt(i))!=-1) // pokud je znak v textu obsažen v řetezci Diacritic 
-      ptext+=DiacRemoved.charAt(Diacritic.indexOf(text.charAt(i))); // předat do pomocného řetězce znak z pole DiacRemoved 
-    else 
-      ptext+=text.charAt(i); // jinak předat původní znak 
-  } 
-  return ptext; 
-} 
+
+  var ptext=""; // pomocná proměnná
+  for(i=0;i < text.length;i++)
+  {// projít zadaný text po znaku
+    if (Diacritic.indexOf(text.charAt(i))!=-1) // pokud je znak v textu obsažen v řetezci Diacritic
+      ptext+=DiacRemoved.charAt(Diacritic.indexOf(text.charAt(i))); // předat do pomocného řetězce znak z pole DiacRemoved
+    else
+      ptext+=text.charAt(i); // jinak předat původní znak
+  }
+  return ptext;
+}
 
 //WebJET - ponecha len safe znaky
-function removeChars(text) 
-{ 
-  var safeChars =   "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_."; 
+function removeChars(text)
+{
+  var safeChars =   "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_.";
 
-  var ptext="";  
-  for(i=0;i < text.length;i++) 
-  { 
-    if (safeChars.indexOf(text.charAt(i))==-1) 
-      ptext+="-"; 
-    else 
-      ptext+=text.charAt(i); 
-  } 
-  
+  var ptext="";
+  for(i=0;i < text.length;i++)
+  {
+    if (safeChars.indexOf(text.charAt(i))==-1)
+      ptext+="-";
+    else
+      ptext+=text.charAt(i);
+  }
+
   //ponahradzuj
   ptext = ptext.replace(/---/gi, "-");
   ptext = ptext.replace(/--/gi, "-");
-  ptext = ptext.replace(/___/gi, "_");   
+  ptext = ptext.replace(/___/gi, "_");
   ptext = ptext.replace(/__/gi, "_");
   ptext = ptext.replace(/_-_/gi, "-");
   ptext = ptext.replace(/-_/gi, "-");
@@ -473,8 +473,8 @@ function removeChars(text)
   ptext = ptext.replace(/__/gi, "_");
   ptext = ptext.replace(/__/gi, "_");
   ptext = ptext.replace(/__/gi, "_");
-  
-  return ptext; 
+
+  return ptext;
 }
 
 function removeSpojky(text)
@@ -507,15 +507,15 @@ function formInsertLabel(name, forField, oCurrentLabel, className, parentNode)
 {
 	if (oCurrentLabel == null)
 	{
-		oCurrentLabel = CreateElement("LABEL", "for='"+forField+"'", parentNode);				
+		oCurrentLabel = CreateElement("LABEL", "for='"+forField+"'", parentNode);
 	}
-	if (oCurrentLabel!=null) 
+	if (oCurrentLabel!=null)
 	{
 		oCurrentLabel.innerHTML = name;
 
 		SetAttribute(oCurrentLabel, 'for', forField);
 		oCurrentLabel.htmlFor = forField;
-		
+
 		if (className != undefined && className != null) SetAttribute(oCurrentLabel, 'class', className);
 	}
 }
@@ -523,7 +523,7 @@ function formInsertLabel(name, forField, oCurrentLabel, className, parentNode)
 function formGetLabel(forField)
 {
    var oEditor = FCK.EditorDocument.body;
-   var labels = oEditor.getElementsByTagName("LABEL");   
+   var labels = oEditor.getElementsByTagName("LABEL");
    for (i=0; i < labels.length; i++)
    {
    	if (labels[i].htmlFor == forField) return labels[i];
@@ -534,19 +534,19 @@ function formGetLabel(forField)
 function getInnerText(elem)
 {
 	var hasInnerText = (document.getElementsByTagName("body")[0].innerText != undefined) ? true : false;
-	
+
 	if(!hasInnerText)
 	{
 	    return elem.textContent;
 	}
-	
+
 	return elem.innerText;
 }
 
 var oLeftTD = null;
 var oRightTD = null;
 var oActualTD = null;
-//inicializuje odkazy na lavu a pravu bunku tabulky pre vlozenie input poli formularov		
+//inicializuje odkazy na lavu a pravu bunku tabulky pre vlozenie input poli formularov
 function formInitializeLeftRightTD()
 {
 	var oActualNode = FCK.Selection.getWJActualNode();
@@ -583,7 +583,11 @@ function refreshValuesFromCk()
             {
                 var protocol = window.parent.CKEDITOR.dialog.getCurrent().getValueOf(wjCkMapping[i].tab, "protocol");
                 //console.log("protocol: " + protocol );
-                if (protocol.indexOf("http")!=-1) value = protocol + value;
+				if (value.indexOf("/")==0 || (value.indexOf("@")!=-1&&value.indexOf("/")==-1)) {
+					//do not append protocol
+				} else {
+					if (value.indexOf(".")!=-1) value = protocol + value;
+				}
             }
         }
         catch (e) { }
@@ -595,7 +599,7 @@ function refreshValuesFromCk()
 function updateValuesToCk()
 {
 	var dialog = window.parent.CKEDITOR.dialog.getCurrent();
-	
+
 	var i = 0;
 	for (i=0; i < wjCkMapping.length; i++)
 	{
@@ -606,20 +610,20 @@ function updateValuesToCk()
 function updateValueToCk(wj)
 {
 	var dialog = window.parent.CKEDITOR.dialog.getCurrent();
-	
+
 	var i = 0;
 	for (i=0; i < wjCkMapping.length; i++)
 	{
 		if (wj == wjCkMapping[i].wj)
 		{
 			dialog.getContentElement(wjCkMapping[i].tab, wjCkMapping[i].ck).setValue(GetE(wjCkMapping[i].wj).value);
-			
+
 			//call onkeyup event on ck field
 			if (wj == "txtWidth" || wj == "txtHeight")
 			{
 				var inputElement = dialog.getContentElement(wjCkMapping[i].tab, wjCkMapping[i].ck).getInputElement().$;
 				dialog.getContentElement(wjCkMapping[i].tab, wjCkMapping[i].ck).fire("keyUp");
-				
+
 				var keyboardEvent = window.parent.document.createEvent("KeyboardEvent");
 				var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
 				keyboardEvent[initMethod](
@@ -646,9 +650,9 @@ function setChangeHandlerToUpdateCk()
 	var i = 0;
 	for (i=0; i < wjCkMapping.length; i++)
 	{
-		GetE(wjCkMapping[i].wj).addEventListener("change", function(event) 
+		GetE(wjCkMapping[i].wj).addEventListener("change", function(event)
 		{
-			updateValueToCk(event.target.getAttribute("id"));			 
+			updateValueToCk(event.target.getAttribute("id"));
 		});
 
 		//IE fix

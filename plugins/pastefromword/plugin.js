@@ -49,6 +49,8 @@
 				 */
 				exec: function( editor, data ) {
 					forceFromWord = 1;
+					//WebJET CMS - always show paste dialog
+					editor._.forcePasteDialog = true;
 					editor.execCommand( 'paste', {
 						type: 'html',
 						notification: data && typeof data.notification !== 'undefined' ? data.notification : true
