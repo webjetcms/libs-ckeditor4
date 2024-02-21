@@ -6,7 +6,7 @@
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
-<%@ taglib uri="/WEB-INF/datetime.tld" prefix="dt"%><iwcm:checkLogon admin="true" perms="menuWebpages"/>
+<%@ taglib uri="/WEB-INF/datetime.tld" prefix="dt"%><iwcm:checkLogon admin="true" perms='<%=Constants.getString("webpagesFunctionsPerms")%>'/>
 <%
 
 String userLanguage = Prop.getLng(request, true);

@@ -19,7 +19,7 @@ taglib prefix="html" uri="/WEB-INF/struts-html.tld" %><%@
 taglib prefix="logic" uri="/WEB-INF/struts-logic.tld" %><%@
 taglib prefix="display" uri="/WEB-INF/displaytag.tld" %><%@
 taglib prefix="stripes" uri="http://stripes.sourceforge.net/stripes.tld"%><%@
-taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><iwcm:checkLogon admin="true" perms="menuWebpages"/><%
+taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><iwcm:checkLogon admin="true" perms='<%=Constants.getString("webpagesFunctionsPerms")%>'/><%
 
 String lng = PageLng.getUserLng(request);
 int docId = Tools.getIntValue(Tools.getRequestParameter(request, "docid"), 0);

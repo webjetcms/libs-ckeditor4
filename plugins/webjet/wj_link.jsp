@@ -8,7 +8,7 @@
 <%@ taglib uri="/WEB-INF/struts-bean.tld" prefix="bean"%>
 <%@ taglib uri="/WEB-INF/struts-html.tld" prefix="html"%>
 <%@ taglib uri="/WEB-INF/struts-logic.tld" prefix="logic"%>
-<%@ taglib uri="/WEB-INF/datetime.tld" prefix="dt"%><iwcm:checkLogon admin="true" perms="menuWebpages"/>
+<%@ taglib uri="/WEB-INF/datetime.tld" prefix="dt"%><iwcm:checkLogon admin="true" perms='<%=Constants.getString("webpagesFunctionsPerms")%>'/>
 
 <%
 	boolean denyImageSize = false;
@@ -449,11 +449,7 @@
 					//console.log(window.parent.CKEDITOR.dialog.getCurrent().getContentElement("target", "linkTargetType").getElement());
 					window.parent.CKEDITOR.dialog.getCurrent().getContentElement("target", "linkTargetType").setValue("_blank");
 				}
-				if (field.value.indexOf("www.")==0)
-				{
-					//field.value = "http://"+field.value;
-					window.parent.CKEDITOR.dialog.getCurrent().getContentElement("info", "protocol").setValue("http://");
-				}
+				//console.log("txtUrlOnChange: "+field.value, "protocol=", window.parent.CKEDITOR.dialog.getCurrent().getContentElement("info", "protocol").getValue());
 			}
 		</script>
 		<table class="urlFormTable">
