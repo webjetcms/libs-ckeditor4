@@ -1142,8 +1142,21 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 				element.removeListener( 'keydown', accessKeyDownHandler );
 				element.removeListener( 'keyup', accessKeyUpHandler );
 
+				//WebJET - zapamatanie pozicie okna (firefox problem )
+				var scrollTop = null;
+				try { scrollTop = ckEditorInstance.document.$.documentElement.scrollTop; } catch (e) {}
+
 				var editor = this._.editor;
 				editor.focus();
+
+				//WebJET - zapamatanie pozicie okna
+				if (typeof scrollTop != "undefined" && scrollTop != null && scrollTop > 0) {
+					try {
+						//WebJET - zapamatanie pozicie
+						//console.log("Restoring scroll position: ", scrollTop);
+						ckEditorInstance.document.$.documentElement.scrollTo(0, scrollTop);
+					} catch (e) {}
+				}
 
 				// Give a while before unlock, waiting for focus to return to the editable. (https://dev.ckeditor.com/ticket/172)
 				setTimeout( function() {
@@ -1835,7 +1848,7 @@ CKEDITOR.DIALOG_STATE_BUSY = 2;
 	CKEDITOR.event.implementOn( CKEDITOR.dialog.prototype );
 
 	defaultDialogDefinition = {
-		resizable: CKEDITOR.DIALOG_RESIZE_BOTH,
+		resizable: CKEDITOR.DIALOG_RESIZE_NONE,
 		minWidth: 600,
 		minHeight: 400,
 		buttons: [ CKEDITOR.dialog.okButton, CKEDITOR.dialog.cancelButton ]

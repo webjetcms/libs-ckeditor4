@@ -106,7 +106,7 @@ Special outer level classes used in this file:
 
 	box-shadow: 0 1px 0 #fff inset;
 
-	background: #cfd1cf;
+	background: #edeff1/* webjet zmena cfd1cf*/;
 	background-image: linear-gradient(to bottom, #f5f5f5, #cfd1cf);
 	filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#f5f5f5', endColorstr='#cfd1cf');
 }

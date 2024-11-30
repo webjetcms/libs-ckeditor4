@@ -380,7 +380,7 @@ CKEDITOR.plugins.add( 'menu', {
 				}
 
 				// Put the items in the right order.
-				sortItems( items );
+				//WEBJET: zakomentovane, lebo to nejako posahava objekt sortItems( items );
 
 				// Apply the editor mixed direction status to menu.
 				var path = editor.elementPath(),

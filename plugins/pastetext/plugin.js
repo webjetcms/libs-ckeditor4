@@ -38,6 +38,9 @@
 				msg = ( notification && typeof notification === 'string' ) ? notification : lang.pastetext.pasteNotification
 					.replace( /%1/, '<kbd aria-label="' + keyInfo.aria + '">' + keyInfo.display + '</kbd>' );
 
+			//WebJET CMS - always show paste dialog
+			editor._.forcePasteDialog = true;
+
 			editor.execCommand( 'paste', {
 				type: 'text',
 				notification: notification ? msg : false
@@ -60,7 +63,7 @@
 
 			editor.addCommand( commandName, pasteTextCmd );
 
-			editor.setKeystroke( pasteKeystroke, commandName );
+			//editor.setKeystroke( pasteKeystroke, commandName );
 
 			CKEDITOR.plugins.clipboard.addPasteButton( editor, 'PasteText', {
 				label: editor.lang.pastetext.button,

@@ -76,7 +76,7 @@ CKEDITOR.plugins.add( 'richcombo', {
 			// Set defaults.
 			{
 				// The combo won't participate in toolbar grouping.
-				canGroup: false,
+				canGroup: true,
 				title: definition.label,
 				modes: { wysiwyg: 1 },
 				editorFocus: 1

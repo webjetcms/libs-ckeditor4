@@ -42,7 +42,7 @@ CKEDITOR.dialog.add( 'checkbox', function( editor ) {
 			title: editor.lang.forms.checkboxAndRadio.checkboxTitle,
 			startupFocus: 'txtName',
 			elements: [ {
-				id: 'txtName',
+				id: '_cke_saved_name',
 				type: 'text',
 				label: editor.lang.common.name,
 				'default': '',

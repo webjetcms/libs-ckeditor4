@@ -203,6 +203,13 @@
 
 				// Force a reload of the data
 				reset: function() {
+
+					if (this._.panel)
+					{
+						//WebJET fix aby sa dali reloadovat styly
+						combo = this;
+					}
+
 					if ( combo ) {
 						delete combo._.panel;
 						delete combo._.list;

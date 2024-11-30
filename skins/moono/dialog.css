@@ -1063,3 +1063,39 @@ a.cke_specialchar:active
 	width: 100%;
 	height: 100%;
 }
+
+
+/******* WEBJET ZMENY *******/
+.cke_dialog_title { background-image: url(/admin/skins/webjet8/assets/global/img/wj/bg-body.jpg) !important; background-position: -128px 197px; background-color: #346098; text-shadow: none; color: white; }
+.cke_dialog_footer { background-image: none; background-color: white; color: black; }
+.cke_dialog_tabs { background: none repeat scroll 0 0 #e5eef9; height: 35px; margin-top: 12px; }
+a.cke_dialog_tab { border: 0px; background: none repeat scroll 0 0 transparent; border-top: 2px solid transparent; margin-right: 2px; color: #000000; font-size: 15px; padding: 9px 15px; text-decoration: none; height: 14px; }
+a.cke_dialog_tab:hover { background: none repeat scroll 0 0 transparent; }
+a.cke_dialog_tab_selected { color: #555555; border-top: medium none; font-weight: 400; background-color: #f5f5f5; border-top: 3px solid #29c01a; }
+a.cke_dialog_tab_selected:hover { background-color: #f5f5f5; }
+.cke_dialog_contents { margin-top: 47px; border-top: 0px; }
+.cke_dialog_body { background-color: #e5eef9; }
+.cke_dialog_footer_buttons a.cke_dialog_ui_button { width: 90px; height: 40px; border: 0px; padding: 0px !important; line-height: 40px; color: white; background: none repeat scroll 0 0 transparent; background-color: #7d7d7d; text-decoration: none; border-radius: 0px; }
+.cke_dialog_footer_buttons a.cke_dialog_ui_button_ok { background: none repeat scroll 0 0 transparent; border: 0px; background-color: #29c01a; }
+.cke_dialog_footer_buttons a.cke_dialog_ui_button span { font-weight: normal; }
+.cke_dialog_contents_body { padding-top: 0px; padding-left: 0px; padding-right: 0px; }
+.cke_dialog_page_contents { margin-top: 12px; padding-left: 12px; padding-right:12px; box-sizing: border-box; }
+div[name*="wjImage"], div.cke_dialog_page_contents[name*="iframe"] { margin: 0px; padding:0px; width: 100%; overflow: hidden; }
+.cke_dialog .ImagePreviewBox { width: 688px; height: 369px; overflow: auto; }
+.cke_dialog_ui_vbox_child { padding-top: 0px; }
+.cke_dialog_contents_body { background-color: #f5f5f5; }
+.cke_dialog .cke_resizer {	margin-top: 35px; }
+a.cke_dialog_tab:hover,
+a.cke_dialog_tab:focus
+{
+	background: #f5f5f5;
+}
+.cke_dialog_footer_buttons a.cke_dialog_ui_button:hover { background-color: #5f5f5f; }
+.cke_dialog_footer_buttons a.cke_dialog_ui_button_ok:hover { background-color: #2b8b3a; }
+.ui-autocomplete .ui-state-hover{
+	background-image:none;
+	cursor: pointer;
+	background-color: #e4e4e4;
+	border: none;
+	color: #000;
+}

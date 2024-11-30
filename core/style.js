@@ -261,13 +261,66 @@ CKEDITOR.STYLE_OBJECT = 3;
 		 * the signature change in the {@link CKEDITOR.style} documentation.
 		 */
 		applyToRange: function( range ) {
-			this.applyToRange =
-				this.type == CKEDITOR.STYLE_INLINE ? applyInlineStyle :
-				this.type == CKEDITOR.STYLE_BLOCK ? applyBlockStyle :
-				this.type == CKEDITOR.STYLE_OBJECT ? applyObjectStyle :
-				null;
+			//webjet aby sa dal menit uz existujuci span za inu triedu
+			try
+			{
+				if (this.element == "span" && range.getCommonAncestor().$.parentNode.tagName == "SPAN") applyObjectStyle.call(this, range);
+				if (this.element == "section" || this.element == "div") {
+					//pagebuilder - dohladanie parent elementov a aplikovanie na neho
+					var failsafe = 0;
+					var parent = range.getCommonAncestor().$.parentNode;
+					var styleTag = this.element.toLowerCase();
+					var styleClassName = this._.definition.attributes["class"];
 
-			return this.applyToRange( range );
+					var space = styleClassName.indexOf(" ");
+					var requiredClassName = null;
+					if (space > 0) {
+						//ak je to vo formate "container div01"
+						requiredClassName = styleClassName.substring(0, space);
+						styleClassName = styleClassName.substring(space+1);
+					}
+
+					//console.log("styleTag=", styleTag, "styleClassName=", styleClassName);
+					var styleSet = ckEditorInstance.config.stylesSet;
+					while (failsafe++ < 30 && parent != null) {
+						var id = parent.getAttribute("id");
+						var className = parent.getAttribute("className");
+						var tag = parent.tagName.toLowerCase();
+						//console.log("Testing parent=", parent, " id="+id+" className=", className, " tag=", tag);
+
+						if ((requiredClassName==null && tag==styleTag) ||
+						    (tag==styleTag && $(parent).hasClass(requiredClassName)) ) {
+
+							//console.log("Setting CSS style ", styleClassName);
+							//over, ci uz tuto CSS triedu nema, aby sa dala aj vypnut znova nastavenim
+							var allreadyHasClass = $(parent).hasClass(styleClassName);
+							//console.log("allreadyHasClass=", allreadyHasClass);
+							//removni existujuce CSS triedy
+							for (var j=0; j<styleSet.length; j++) {
+								if (styleSet[j].hasOwnProperty("attributes")==false) continue;
+								var removeClass = styleSet[j].attributes["class"];
+								space = removeClass.indexOf(" ");
+								//ak je to vo formate "container div01" nechceme odstranit css container
+								if (space > 0) removeClass = removeClass.substring(space+1);
+								//console.log("removing class", removeClass);
+								$(parent).removeClass(removeClass);
+							}
+							//nastav novu CSS triedu
+							if (allreadyHasClass==false) $(parent).addClass(styleClassName);
+							return;
+						}
+
+						if (id != null) {
+							if (id=="WebJETEditorBody" || id.indexOf("wjInline-")!=-1) break;
+						}
+						parent = parent.parentNode;
+					}
+				}
+			} catch (e) { console.log(e); }
+
+			if (this.type == CKEDITOR.STYLE_INLINE) applyInlineStyle.call(this, range) ;
+			else if (this.type == CKEDITOR.STYLE_BLOCK) applyBlockStyle.call(this, range) ;
+			else if (this.type == CKEDITOR.STYLE_OBJECT) applyObjectStyle.call(this, range) ;
 		},
 
 		/**
