@@ -22,6 +22,8 @@ taglib prefix="stripes" uri="http://stripes.sourceforge.net/stripes.tld"%><%@
 taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><iwcm:checkLogon admin="true" perms='<%=Constants.getString("webpagesFunctionsPerms")%>'/><%
 
 String lng = PageLng.getUserLng(request);
+//In case if user is logged in EN lng (for example) and in banner preview he want this language (not group language)
+String origLng = lng;
 int docId = Tools.getIntValue(Tools.getRequestParameter(request, "docid"), 0);
 if (docId > 0) {
 	DocDetails doc = DocDB.getInstance().getDoc(docId);
@@ -34,6 +36,8 @@ else {
 		lng = groupDetails.getLng();
 	}
 }
+//set language also to Spring Locale object
+PageLng.setUserLng(request, response, lng);
 
 pageContext.setAttribute("lng", lng);
 request.setAttribute("PageLng", lng);
@@ -158,7 +162,9 @@ else
 			if (group != null) request.setAttribute("pageGroupDetails", group);
 
 			TemplateDetails temp = TemplatesDB.getInstance().getTemplate(doc.getTempId());
-			if (temp != null) request.setAttribute("templateDetails", temp);
+			if (temp != null) {
+				sk.iway.iwcm.doc.ShowDoc.setRequestData(temp, request);
+			}
 		}
 	}
 
@@ -483,13 +489,14 @@ else
 			<%
 			String device = myPageParams.getValue("device", null);
 			if (Tools.isNotEmpty(device)) {
-				Prop prop = Prop.getInstance(lng);
+				Prop prop = Prop.getInstance(origLng);
+
 				device = Tools.replace(device, "pc", prop.getText("apps.devices.pc"));
 				device = Tools.replace(device, "tablet", prop.getText("apps.devices.tablet"));
 				device = Tools.replace(device, "phone", prop.getText("apps.devices.phone"));
 				%>
 				<div class="deviceInfo">
-					<span class="deviceInfoTitle"><iwcm:text key="apps.devices.title"/>:</span>
+					<span class="deviceInfoTitle"><%=prop.getText("apps.devices.title")%>:</span>
 					<span class="deviceInfoTypes"><%=device%></span>
 				</div>
 				<%

@@ -1019,21 +1019,28 @@ icons[counter++] = Array('fa-x-ray', 'x-ray');
 icons[counter++] = Array('fa-yen-sign', 'yen-sign');
 icons[counter++] = Array('fa-yin-yang', 'yin-yang');
 
-icons.sort();
-var fontawesomeIcons = '';
-for (var i = 0; i < icons.length; i++) {
-    var newTitle = '';
-    var ctr = 0;
-    var title = icons[i][1];
-    title = title.split(' ');
-    for (var x = 0; x < title.length; x++) {
-        ctr++;
-        newTitle += ctr == 3 ? '<br />' : '';
-        newTitle += title[x] + ' ';
-        ctr = ctr == 3 ? 0 : ctr;
-    }
-    fontawesomeIcons += '<a href="#" onclick="klik(this);return false;" title="fa ' + icons[i][0] + '"><span class="fa ' + icons[i][0] + '"></span><div>' + newTitle + '</div></a>';
-};
+var fontawesomeIcons = null;
+
+function getFontawesomeIcons() {
+    if (fontawesomeIcons != null) return fontawesomeIcons;
+
+    icons.sort();
+    fontawesomeIcons = "";
+    for (var i = 0; i < icons.length; i++) {
+        var newTitle = '';
+        var ctr = 0;
+        var title = icons[i][1];
+        title = title.split(' ');
+        for (var x = 0; x < title.length; x++) {
+            ctr++;
+            newTitle += ctr == 3 ? '<br />' : '';
+            newTitle += title[x] + ' ';
+            ctr = ctr == 3 ? 0 : ctr;
+        }
+        fontawesomeIcons += '<a href="#" onclick="klik(this);return false;" title="fa ' + icons[i][0] + ' ' + icons[i][1] + '"><span class="fa fas fa-solid ' + icons[i][0] + '"></span><div>' + newTitle + '</div></a>';
+    };
+    return fontawesomeIcons;
+}
 
 function klik(el) {
     //console.log("Klik, id=", getDialogId());
@@ -1049,10 +1056,12 @@ function klik(el) {
 function searchIcon(val) {
     var aydi = document.getElementById('fontawesome'+getDialogId());
     var klases = aydi.getElementsByTagName('a');
+    val = val.toLowerCase();
     for (var i = 0, len = klases.length, klas, klasNeym; i < len; i++) {
         klas = klases[i];
         klasNeym = klas.getAttribute('title');
-        if (klasNeym && klasNeym.indexOf(val) >= 0) {
+
+        if (klasNeym && klasNeym.toLowerCase().indexOf(val) >= 0) {
             klas.style.display = 'block';
         } else {
             klas.style.display = 'none';
@@ -1096,6 +1105,17 @@ CKEDITOR.dialog.add('fontawesomeDialog', function(editor) {
 
     //console.log("Adding FA dialog, editor=", editor);
     var dialogId = "-"+editor.name;
+
+    //try to add custom icons
+    var customIcons = editor.config.fontAwesomeCustomIcons;
+    if (typeof customIcons != 'undefined' && customIcons != null && customIcons.length > 0) {
+        //custom icons are in format icon:text on new lines
+        customIcons = customIcons.split('\n');
+        for (var i = 0; i < customIcons.length; i++) {
+            var pair = customIcons[i].split(':');
+            if (pair.length==2) icons[counter++] = Array(pair[0], pair[1]);
+        }
+    }
 
     return {
         title: 'Font Awesome',
@@ -1263,7 +1283,7 @@ CKEDITOR.dialog.add('fontawesomeDialog', function(editor) {
                 }
             }, {
                 type: 'html',
-                html: '<div id="fontawesome'+dialogId+'" class="fontawesomeIconsSelector">' + fontawesomeIcons + '</div>'
+                html: '<div id="fontawesome'+dialogId+'" class="fontawesomeIconsSelector">' + getFontawesomeIcons() + '</div>'
             }]
         }],
         onOk: function() {

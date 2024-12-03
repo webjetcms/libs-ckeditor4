@@ -73,7 +73,13 @@ CKEDITOR.plugins.add('fontawesome', {
         if (typeof CKEDITOR.hasFA == "undefined") {
             //console.log("Appending dialog and FA styles");
             CKEDITOR.dialog.add('fontawesomeDialog', this.path + 'dialogs/fontawesome.js');
-            //CKEDITOR.document.appendStyleSheet(CKEDITOR.plugins.getPath('fontawesome') + 'font-awesome/css/font-awesome.min.css');
+            var editorFontAwesomeCssPath = editor.config.editorFontAwesomeCssPath;
+            if (typeof editorFontAwesomeCssPath != "undefined" && editorFontAwesomeCssPath != null && editorFontAwesomeCssPath != "") {
+                var paths = editorFontAwesomeCssPath.split(/,|\r?\n/);
+                for (var i = 0; i < paths.length; i++) {
+                    CKEDITOR.document.appendStyleSheet(paths[i]);
+                }
+            }
             CKEDITOR.document.appendStyleSheet(CKEDITOR.plugins.getPath('fontawesome') + 'fontawesome.css');
             CKEDITOR.hasFA = true;
         }
