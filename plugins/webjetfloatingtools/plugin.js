@@ -494,7 +494,7 @@
 								height = screen.height - 150;
 							}
 
-							var win = window.open("/admin/v9/apps/image-editor/?iID=-1&dir=" + dir + "&name=" + name, "tinyWindow", "toolbar=no,scrollbars=yes,resizable=yes,width=" + width + ",height=" + height + ";");
+							var win = window.open("/admin/v9/apps/image-editor/?id=-1&dir=" + encodeURIComponent(dir) + "&name=" + encodeURIComponent(name) + "&showOnlyEditor=true", "tinyWindow", "toolbar=no,scrollbars=yes,resizable=yes,width=" + width + ",height=" + height + ";");
 						}
 					}
 				}
