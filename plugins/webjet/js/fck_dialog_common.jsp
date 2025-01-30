@@ -583,7 +583,7 @@ function refreshValuesFromCk()
             {
                 var protocol = window.parent.CKEDITOR.dialog.getCurrent().getValueOf(wjCkMapping[i].tab, "protocol");
                 //console.log("protocol: ", protocol, "value=", value );
-				if (value.indexOf("/")==0 || (value.indexOf("@")!=-1&&value.indexOf("/")==-1) || value.indexOf("://")>0) {
+				if (value.indexOf("/")==0 || (value.indexOf("@")!=-1&&value.indexOf("/")==-1) || value.indexOf("://")>0 || value.indexOf("tel:")==0) {
 					//do not append protocol
 				} else {
 					if (value.indexOf(".")!=-1) value = protocol + value;
