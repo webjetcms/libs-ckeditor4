@@ -1364,6 +1364,9 @@
 		 * @returns {Array} Returns an array of {@link CKEDITOR.dom.element}s.
 		 */
 		getStyledSpans: function( property, source ) {
+			//webjetcms inline error
+			if (null == source) return [];
+
 			var testProperty = CKEDITOR.env.ie && CKEDITOR.env.version == 8 ? property.toUpperCase() : property,
 				spans = source.find( 'span[style*=' + testProperty + ']' ).toArray();
 

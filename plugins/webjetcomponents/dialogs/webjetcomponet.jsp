@@ -103,6 +103,20 @@ body { overflow: hidden; }
         }
         %>
 
+        //parse original JSP fileName
+        var originalJspFileName = "";
+        var originalComponentName = componentName;
+        if (html != null && html.indexOf("!INCLUDE") == 0) {
+            var compFileNameStart = html.indexOf("(");
+            if (compFileNameStart !== -1) {
+                var jspIndex = html.indexOf(".jsp");
+                if (jspIndex > compFileNameStart) {
+                    //skus najst presnejsie meno
+                    originalJspFileName = html.substring(compFileNameStart + 1, jspIndex+4);
+                }
+            }
+        }
+
         if (html != null) {
             for (var key in replaces) {
                 html = html.replace(key, replaces[key]);
@@ -162,14 +176,17 @@ body { overflow: hidden; }
                 parameters = parameters.replace(/\&amp;nbsp;/gi, "&nbsp;")
                 //console.log("CURRENT PARAMETERS=", parameters);
 
-                var src = '/admin/v9/webpages/component?id=1&showOnlyEditor=true&name=' + encodeURIComponent(c);
+                var src = '/admin/v9/webpages/component?id=1&showOnlyEditor=true';
                 var iframe = $('#editorComponent');
                 iframe
                     .after($('<input type="hidden" id="className" />').val(c))
                     .after($('<input type="hidden" id="parameters" />').val(parameters))
                     .after($('<input type="hidden" id="docId" />').val(docId))
                     .after($('<input type="hidden" id="groupId" />').val(groupId))
-                    .after($('<input type="hidden" id="title" />').val(title));
+                    .after($('<input type="hidden" id="title" />').val(title))
+                    .after($('<input type="hidden" id="originalComponentName" />').val(originalComponentName))
+                    .after($('<input type="hidden" id="originalJspFileName" />').val(originalJspFileName));
+
                 iframe.attr('src', src);
                 return;
             }

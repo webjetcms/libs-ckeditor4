@@ -39,6 +39,26 @@ CKEDITOR.editor.prototype.wjCreateFakeParserElement = function( realElement, cla
 	return new CKEDITOR.htmlParser.element( 'iframe', attributes );
 };
 
+function removeEmptyParagraph(element) {
+	//console.log("removeEmptyParagraph, element=", element);
+	var remove = false;
+
+	var outerHtml = element.getOuterHtml();
+	//console.log("outerHtml=", outerHtml, "tagName=", element.$.tagName, "textContent=", element.$.textContent);
+	if ("<p><br></p>" == outerHtml || "<p>&nbsp;</p>" == outerHtml || "<p></p>" == outerHtml || "<p>&nbsp;<br></p>" == outerHtml || "<p>&nbsp;<br type=\"_moz\"></p>" == outerHtml) {
+		remove = true;
+	}
+
+	if ("P" == element.$.tagName && element.$.textContent == "") {
+		remove = true;
+	}
+
+	//console.log("Remove=", remove);
+	if (remove) {
+		element.remove();
+	}
+}
+
 CKEDITOR.editor.prototype.wjInsertUpdateComponent = function( includeText )
 {
 	//window.alert("includeText="+includeText);
@@ -74,8 +94,7 @@ CKEDITOR.editor.prototype.wjInsertUpdateComponent = function( includeText )
 
 			//ak sa jedna o prazdny odstavec odstran ho
 			//console.log(element.getOuterHtml());
-			var outerHtml = element.getOuterHtml();
-			if ("<p><br></p>" == outerHtml || "<p>&nbsp;</p>" == outerHtml || "<p></p>" == outerHtml) element.remove();
+			removeEmptyParagraph(element);
 
 			return;
 		}
@@ -103,14 +122,9 @@ CKEDITOR.editor.prototype.wjInsertHtml = function( includeText )
 			elementInclude.insertAfter( element );
 			//ak sa jedna o prazdny odstavec odstran ho
 			//console.log("outerHTML 2="+element.getOuterHtml());
-			var outerHtml = element.getOuterHtml();
+
             //console.log("outerHtml="+outerHtml);
-			if ("<p><br></p>" == outerHtml || "<p>&nbsp;</p>" == outerHtml || "<p></p>" == outerHtml || "<p>&nbsp;<br></p>" == outerHtml)
-			{
-				//console.log("removing element");
-				//console.log(element);
-				element.remove();
-			}
+			removeEmptyParagraph(element);
 
 			if (includeText.indexOf("!INCLUDE")!=-1)
 			{
