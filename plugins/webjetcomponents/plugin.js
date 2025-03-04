@@ -112,6 +112,7 @@ CKEDITOR.editor.prototype.wjInsertHtml = function( includeText )
 
 	var elementsCount = $("<span id='counter'>"+includeText+"</span>").children().length;
 	var ranges = this.getSelection().getRanges( 1 );
+	var inserted = false;
 	//console.log("ranges.length="+ranges.length+" elementsCount="+elementsCount+" insertInline="+insertInline);
 	if (insertInline == false && ranges.length > 0)
 	{
@@ -126,31 +127,31 @@ CKEDITOR.editor.prototype.wjInsertHtml = function( includeText )
             //console.log("outerHtml="+outerHtml);
 			removeEmptyParagraph(element);
 
-			if (includeText.indexOf("!INCLUDE")!=-1)
-			{
-				var scrollTop = 0;
-				try { scrollTop = document.getElementById(ckEditorInstance.id+"_contents").getElementsByTagName('iframe')[0].contentWindow.scrollY } catch (e) {}
-
-				//console.log("GET SET DATA, scrollTop="+scrollTop);
-                //toto musime spravit aby sme korektne inicializovali data, widgety a podobne
-                this.setData(this.getData());
-
-				if (scrollTop > 0)
-				{
-					setTimeout(function() {
-                        try {
-                        	//console.log("Setting scroll to: "+scrollTop);
-                        	document.getElementById(ckEditorInstance.id+"_contents").getElementsByTagName('iframe')[0].contentWindow.scrollBy(0, scrollTop);
-                        } catch (e) {console.log(e);}
-					}, 500);
-				}
-            }
-
-			return;
+			inserted = true;
 		}
 	}
 
-	this.insertHtml(includeText, "html");
+	if (inserted === false) this.insertHtml(includeText, "html");
+
+	if (includeText.indexOf("!INCLUDE")!=-1)
+	{
+		var scrollTop = 0;
+		try { scrollTop = document.getElementById(ckEditorInstance.id+"_contents").getElementsByTagName('iframe')[0].contentWindow.scrollY } catch (e) {}
+
+		//console.log("GET SET DATA, scrollTop="+scrollTop);
+		//toto musime spravit aby sme korektne inicializovali data, widgety a podobne
+		this.setData(this.getData());
+
+		if (scrollTop > 0)
+		{
+			setTimeout(function() {
+				try {
+					//console.log("Setting scroll to: "+scrollTop);
+					document.getElementById(ckEditorInstance.id+"_contents").getElementsByTagName('iframe')[0].contentWindow.scrollBy(0, scrollTop);
+				} catch (e) {console.log(e);}
+			}, 500);
+		}
+	}
 };
 
 

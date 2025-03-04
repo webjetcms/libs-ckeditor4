@@ -140,11 +140,11 @@ a.cke_button.cke_button_expandable {
    i.e. currently writing in bold or when spell checking is enabled. */
 a.cke_button_on
 {
-	box-shadow: 0 1px 5px rgba(0,0,0,.6) inset, 0 1px 0 rgba(0,0,0,.2);
+	/*box-shadow: 0 1px 5px rgba(0,0,0,.6) inset, 0 1px 0 rgba(0,0,0,.2);*/
 
-	background: #b5b5b5;
-	background-image: linear-gradient(to bottom, #aaa, #cacaca);
-	filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#aaaaaa', endColorstr='#cacaca');
+	background: #B2B8C8;
+	/*background-image: linear-gradient(to bottom, #aaa, #cacaca);
+	filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#aaaaaa', endColorstr='#cacaca');*/
 }
 
 .cke_hc .cke_button_on,
@@ -179,7 +179,7 @@ a.cke_button_on:hover,
 a.cke_button_on:focus,
 a.cke_button_on:active
 {
-	box-shadow: 0 1px 6px rgba(0,0,0,.7) inset, 0 1px 0 rgba(0,0,0,.2);
+	/*box-shadow: 0 1px 6px rgba(0,0,0,.7) inset, 0 1px 0 rgba(0,0,0,.2);*/
 }
 
 a.cke_button_off:hover,
@@ -422,10 +422,10 @@ a.cke_toolbox_collapser
 }
 
 /******* WEBJET ZMENY *******/
-.cke_top { background: #f5f5f5/*edeff1*/ !important; padding: 16px 8px 15px !important; border-bottom: 2px solid #e5eef9 !important; }
+.cke_top { background: #F3F3F6/*edeff1*/ !important; padding: 16px 8px 15px !important; border-bottom: 2px solid #F3F3F6 !important; }
 .cke_chrome { border: 0px none !important; }
 .cke_toolbar { border-right: 1px solid #edeff1 !important; }
-.cke_bottom { background: #e5eef9 !important; }
+.cke_bottom { background: #F3F3F6 !important; }
 
 a.cke_button__components, a.cke_button__paste, a.cke_button__image, a.cke_button__inlinepublish { height: 44px; }
 a.cke_button__components span, a.cke_button__inlinepublish span { height: 44px; width: 40px; background-size: auto !important; }
@@ -481,10 +481,10 @@ a.cke_button_disabled:active
 	background-image: none;
 }
 a.cke_button { height: auto; min-height: 18px; 	transform: translateZ(0px); }
-a.cke_button:hover { background-color: transparent; }
+a.cke_button:hover { background-color: #b2b8c8; cursor: pointer; }
 
 a.cke_button::before {
-    background: none repeat scroll 0 0 #29c01a;
+    /*background: none repeat scroll 0 0 #29c01a;*/
     bottom: 0;
     content: "";
     height: 3px;
@@ -530,14 +530,14 @@ span.cke_floatingtools:after
 }
 span.cke_floatingtools span.cke_toolbar span.cke_voice_label { display: none; }
 
-span.cke_toolbox span.cke_toolbar { z-index: 101; background-color: #f5f5f5; }
+span.cke_toolbox span.cke_toolbar { z-index: 101; background-color: #F3F3F6; }
 
-.cke_top { background: #f5f5f5/*edeff1*/ !important; padding: 0px !important; border-bottom: 2px solid #e5eef9 !important; }
+.cke_top { background: #F3F3F6/*edeff1*/ !important; padding: 0px !important; border-bottom: 1px solid #DDDFE6 !important; }
 .cke_chrome { border: 0px none !important; }
 .cke_toolbar { border-right: 1px solid #edeff1 !important; }
-.cke_bottom { background: #e5eef9 !important; }
+.cke_bottom { background: #F3F3F6 !important; }
 /* toto ma position relative kvoli inline toolbaru a schovaniu sa za */
-.cke_top span.cke_toolbox { padding: 16px 8px 15px !important; background-color: #f5f5f5; display: block; min-height: 60px; width: 100%; position: relative; z-index: 101; }
+.cke_top span.cke_toolbox { padding: 16px 8px 15px !important; background-color: #F3F3F6; display: block; min-height: 60px; width: 100%; position: relative; z-index: 101; }
 .cke_focus { outline: none; }
 
 span.cke_floatingtools { z-index: 999; }

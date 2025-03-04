@@ -65,7 +65,7 @@ Special outer level classes used in this file:
 .cke_menubutton:focus,
 .cke_menubutton:active
 {
-	background-color: #D3D3D3;
+	background-color: #DDDFE6;
 	display: block;
 }
 
@@ -95,7 +95,7 @@ Special outer level classes used in this file:
 /* The menu item icon. */
 .cke_menubutton_icon
 {
-	background-color: #D7D8D7;
+	background-color: #DDDFE6;
 	opacity: 0.70; /* Safari, Opera and Mozilla */
 	filter: alpha(opacity=70); /* IE */
 	padding: 4px;
@@ -163,7 +163,7 @@ Special outer level classes used in this file:
 .cke_menubutton:focus,
 .cke_menubutton:active
 {
-	background-color: #EFF0EF;
+	background-color: #DDDFE6;
 }
 
 .cke_panel_frame .cke_menubutton_label

@@ -63,7 +63,7 @@ CKEDITOR.dialog.add( 'wjbuttonDialog', function( editor ) {
 						},
 						{
 							type: 'html',
-							html: '&nbsp;<br/><i style="margin-top:6px; margin-left: 8px;" onclick="openLinkDialogWindow(\'ckEditorDialog\', \'tab-basic:url\');" class="wj-action-icon"><img src="/admin/skins/webjet8/ckeditor/dist/plugins/webjetcomponents/icons/link.png" style="margin-top:5px;"/></i>'
+							html: '&nbsp;<br/><i style="margin-top:15px; margin-left: 8px;display: block; font-size: 18px; cursor: pointer;" onclick="openLinkDialogWindow(\'ckEditorDialog\', \'tab-basic:url\');" class="wj-action-icon ti ti-focus-2"></i>'
 						}]
 					},
 					{

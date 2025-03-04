@@ -21,7 +21,6 @@ request.setAttribute("userLanguage", userLanguage);
 <%@ include file="/admin/layout_top_popup.jsp" %>
 
 <style type="text/css">
-body { background-color: #f5f5f5; }
 div.results { background-color: white; padding: 5px; padding-top: 10px; }
 div.pixabayBox { margin: 0px; }
 .pixabayBox .imageSearch { padding: 10px; padding-top: 10px; }
@@ -234,9 +233,9 @@ div.no_results { color: red; font-weight: bold; text-align: center; }
 										var inputElement = window.parent.$(".row:not(.template) input.elfinder-url-input");
 										//console.log("FILE: ", inputElement);
 										inputElement.val(data.virtualPath + "?v=" + new Date().getTime());
-										window.parent.$(".md-breadcrumb ul.nav li:first a").trigger("click");
-										window.parent.$(".md-breadcrumb ul.nav li.nav-item a.active").removeClass("active");
-										window.parent.$(".md-breadcrumb ul.nav li:first a").addClass("active");
+										window.parent.$(".md-tabs ul.nav li:first a").trigger("click");
+										window.parent.$(".md-tabs ul.nav li.nav-item a.active").removeClass("active");
+										window.parent.$(".md-tabs ul.nav li:first a").addClass("active");
 									}
 									else
 									{
