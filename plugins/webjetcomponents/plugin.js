@@ -272,6 +272,10 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
 					onShow: function()
 					{
 						this.resize(976, 565);
+						//reset title
+						this.parts.title.setText(editor.lang.webjetcomponents.title);
+						window.wjComponentsDialog = this;
+
 						//console.log("onShow, this=", this, " element=", this.getElement());
 						//window.dialog = this;
 						//--this.move(10, 10);
