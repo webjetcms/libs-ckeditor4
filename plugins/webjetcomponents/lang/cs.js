@@ -46,6 +46,10 @@ CKEDITOR.plugins.setLang( 'webjetcomponents', 'cs', {
 		bgColor: 'Farba pozadí',
 		choose: 'Vybrat',
 		textColor: 'Farba písma'
+	},
+	aibutton:
+	{
+		title: 'AI asistent'
 	}
 } );
 

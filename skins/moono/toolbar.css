@@ -541,3 +541,14 @@ span.cke_toolbox span.cke_toolbar { z-index: 101; background-color: #F3F3F6; }
 .cke_focus { outline: none; }
 
 span.cke_floatingtools { z-index: 999; }
+
+a.cke_button__aibutton span.cke_button_icon {
+	transform: rotate(186deg);
+}
+a.cke_button__aibutton:hover {
+	background-color: #E3DBFF;
+}
+a.cke_button__aibutton:hover span.cke_button_icon {
+	transform: rotate(200deg);
+    transition: all 0.2s ease-in-out;
+}

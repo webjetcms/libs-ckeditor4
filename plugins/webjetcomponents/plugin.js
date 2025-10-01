@@ -154,6 +154,30 @@ CKEDITOR.editor.prototype.wjInsertHtml = function( includeText )
 	}
 };
 
+function getAiButtonReal(editor) {
+	try {
+		var aiButtonReal = null;
+
+		//normal mode
+		var dteField = $(editor.element.$).parents(".DTE_Field");
+		if (dteField.length>0) aiButtonReal = dteField.find(".btn-ai-wysiwyg");
+
+		//pageBuilder is in iframe, we need to go to parent frame and find button there
+		if (aiButtonReal == null) {
+			var iframeElement = window.frameElement; // The <iframe> element in parent
+			var parentDiv = window.parent.$(iframeElement.closest('.DTE_Field'));
+			aiButtonReal = parentDiv.find(".btn-ai-wysiwyg");
+		}
+
+		// Get the CKEditor button
+		if (aiButtonReal != null && aiButtonReal.length > 0) {
+			return aiButtonReal;
+		}
+	} catch (e) {
+		console.log(e);
+	}
+	return null;
+}
 
 // Register the plugin within the editor.
 CKEDITOR.plugins.add( 'webjetcomponents', {
@@ -846,15 +870,15 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
 				if (element.tagName=="A")
 				{
 					//pre display block alebo inline-block tiez musime zobrazit editor
-               var displayStyle = window.getComputedStyle(element, null).getPropertyValue("display");
-               if (displayStyle == null) displayStyle = "";
+					var displayStyle = window.getComputedStyle(element, null).getPropertyValue("display");
+					if (displayStyle == null) displayStyle = "";
 					if (element.className.indexOf('btn-')!=-1 || displayStyle.indexOf("block")!=-1)
 					{
 						ckEditorInstance.lastWjButton = element;
 						setTimeout(function () {
 								ckEditorInstance.execCommand('wjbutton');
 						}, 10);
-               }
+               		}
 				}
 				else if (element.tagName=="IMG")
 				{
@@ -868,5 +892,37 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
 		});
 
         CKEDITOR.dialog.add( 'wjbuttonDialog', this.path + 'dialogs/wjbutton.js' );
+
+		if (getAiButtonReal(editor)!=null) {
+			editor.addCommand( 'aibutton', {
+				startDisabled: false,
+				contextSensitive: true,
+				modes: { wysiwyg:1 },
+				exec: function( editor ) {
+					//console.log("AI button click, editor=", editor);
+					var aiButtonReal = getAiButtonReal(editor);
+					if (aiButtonReal != null) {
+						aiButtonReal.trigger("click");
+					}
+				},
+				refresh: function( editor, path ) {
+					var state = CKEDITOR.TRISTATE_DISABLED;
+
+					if (getAiButtonReal(editor)!=null) state = CKEDITOR.TRISTATE_OFF;
+
+					this.setState(state);
+					return state;
+				}
+			});
+			editor.ui.addButton( 'Aibutton', {
+				label: editor.lang.webjetcomponents.aibutton.title,
+				command: 'aibutton',
+				icon: this.path + 'icons/sparkles.svg'
+			});
+			editor.on('contentDom', function() {
+				//console.log("Refreshing aibutton state");
+				editor.getCommand("aibutton").refresh(editor, null);
+			});
+		}
 	}
 } );
