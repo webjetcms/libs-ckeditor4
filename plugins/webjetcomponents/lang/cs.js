@@ -43,9 +43,9 @@ CKEDITOR.plugins.setLang( 'webjetcomponents', 'cs', {
 		fontSize: 'Velikost písma',
 		borderRadius: 'Zaoblení rohů',
 		target: 'Cíl odkazu',
-		bgColor: 'Farba pozadí',
+		bgColor: 'Barva pozadí',
 		choose: 'Vybrat',
-		textColor: 'Farba písma'
+		textColor: 'Barva písma'
 	},
 	aibutton:
 	{
