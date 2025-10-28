@@ -77,8 +77,10 @@ CKEDITOR.dialog.add( 'wjbuttonDialog', function( editor ) {
 							var v = element.getAttribute('target');
 							if(v == undefined || v == null || v == ""){
 								var href = element.getAttribute('href');
-								if (href.indexOf("http")==0 || href.indexOf("www.")==0 || href.indexOf("/files/")==0){
-									v = "_blank";
+								if (typeof href != "undefined" && href != null){
+									if (href.indexOf("http")==0 || href.indexOf("www.")==0 || href.indexOf("/files/")==0){
+										v = "_blank";
+									}
 								}
 							}
 

@@ -105,6 +105,7 @@ var CKBUILDER_CONFIG = {
 		webjetfloatingtools: 1,
 		webjetmagicline: 1,
 		webjettooltip: 1,
+		webjetpicture: 1,
 		quicktable: 1,
 		forms: 1,
 		iframedialog: 1,
