@@ -29,6 +29,8 @@
 				triggerOffset: triggerOffset,
 				holdDistance: 0 | triggerOffset * ( config.magicline_holdDistance || 0.5 ),
 				boxColor: config.magicline_color || '#ff0000',
+				magicLineId: config.magicline_id || '',
+				plusIcon: config.magicline_plusIcon || '+',
 				rtl: config.contentsLangDirection == 'rtl',
 				tabuList: [ 'data-cke-hidden-sel' ].concat( config.magicline_tabuList || [] ),
 				triggers: config.magicline_triggers // ? DTD_BLOCK : { table: 1, hr: 1, div: 1, ul: 1, ol: 1, dl: 1, form: 1, blockquote: 1, iframe: 1, p: 1, img: 1, h1: 1, h2: 1, h3: 1, h4: 1, h5: 1, h6: 1 }
@@ -389,7 +391,7 @@
 		// Shared CSS stuff for box elements
 		CSS_COMMON = 'width:0px;height:0px;padding:0px;margin:0px;display:block;' + 'z-index:9999;color:#fff;position:absolute;font-size: 0px;line-height:0px;',
 		CSS_TRIANGLE = CSS_COMMON + 'border-color:transparent;display:block;border-style:solid;',
-		TRIANGLE_HTML = '<span>' + WHITE_SPACE + '</span>';
+		TRIANGLE_HTML = '<span class="wjmagiclineTriangle">' + WHITE_SPACE + '</span>';
 
 	enterElements[ CKEDITOR.ENTER_BR ] = 'br';
 	enterElements[ CKEDITOR.ENTER_P ] = 'p';
@@ -569,9 +571,18 @@
 	//  +--------------------------------------------------------------------------+
 	//
 	function initLine( that ) {
+
+		var normalStyles = 'border-top:1px solid ' + that.boxColor + '; margin-left: 2px; margin-right: 2px;';
+		var defaultId = "wjmagicline";
+
+		if (that.magicLineId != ''){
+			normalStyles = ''; //will be styled by css
+			defaultId = that.magicLineId;
+		}
+
 		var doc = that.doc,
 			// This the main box element that holds triangles and the insertion button
-			line = newElementFromHtml( '<span contenteditable="false" style="' + CSS_COMMON + 'position:absolute;border-top:1px solid ' + that.boxColor + '; margin-left: 2px; margin-right: 2px;"></span>', doc ),
+			line = newElementFromHtml( '<span id="' + defaultId + '" contenteditable="false" style="' + CSS_COMMON + 'position:absolute;'+normalStyles+'"></span>', doc ),
 			iconPath = CKEDITOR.getUrl( this.path + 'images/' + ( env.hidpi ? 'hidpi/' : '' ) + 'icon' + ( that.rtl ? '-rtl' : '' ) + '.png' );
 
 		extend( line, {
@@ -588,8 +599,8 @@
 			lineChildren: [
 				extend(
 					newElementFromHtml(
-						'<span title="' + that.editor.lang.webjetmagicline.insert +
-						'" contenteditable="false">+</span>', doc
+						'<span id="' + defaultId + 'Plus" title="' + that.editor.lang.webjetmagicline.insert +
+						'" contenteditable="false">'+that.plusIcon+'</span>', doc
 					), {
 						base: CSS_COMMON + 'height:17px;width:17px; left: 50%; right 50%; transform: translateX(-50%);' +
 								'background-color: #fceba9;cursor:pointer;' +
@@ -603,7 +614,7 @@
 				),
 				extend(
 						newElementFromHtml(
-							'<div id="wjmagiclineItems"><ul><li style="background-image:url(/admin/skins/webjet8/ckeditor/dist/plugins/webjetmagicline/img/text.png);">'+that.editor.lang.webjetmagicline.text+'</li><li data-wjcommand="image" style="background-image:url(/components/_common/admin/inline/editor-image.gif);">'+that.editor.lang.webjetmagicline.image+'</li><li data-wjcommand="webjetcomponentsDialog" style="background-image:url(/components/_common/admin/inline/editor-components.gif)">'+that.editor.lang.webjetmagicline.app+'</li><li data-wjcommand="webjethtmlboxDialog" style="background-image:url(/admin/skins/webjet8/ckeditor/dist/plugins/webjetmagicline/img/templates.png)">'+that.editor.lang.webjetmagicline.temp+'</li></ul></div>', doc
+							'<div id="' + defaultId + 'Items"><ul><li style="background-image:url(/admin/skins/webjet8/ckeditor/dist/plugins/webjetmagicline/img/text.png);">'+that.editor.lang.webjetmagicline.text+'</li><li data-wjcommand="image" style="background-image:url(/components/_common/admin/inline/editor-image.gif);">'+that.editor.lang.webjetmagicline.image+'</li><li data-wjcommand="webjetcomponentsDialog" style="background-image:url(/components/_common/admin/inline/editor-components.gif)">'+that.editor.lang.webjetmagicline.app+'</li><li data-wjcommand="webjethtmlboxDialog" style="background-image:url(/admin/skins/webjet8/ckeditor/dist/plugins/webjetmagicline/img/templates.png)">'+that.editor.lang.webjetmagicline.temp+'</li></ul></div>', doc
 						), {
 							base: CSS_COMMON + 'height:56px;width:224px; left: 50%; right 50%; transform: translateX(-50%);box-sizing:content-box;' +
 								'background-color: #fceba9;' +
@@ -812,33 +823,27 @@
 
 							//console.log("MOUSE UP, command="+command);
 							//console.log(event);
-
-							line.detach();
-
-							accessFocusSpace( that, function( accessNode ) {
-								// Use old trigger that was saved by 'place' method. Look: line.place
-								var trigger = that.line.trigger;
-
-								accessNode[ trigger.is( EDGE_TOP ) ? 'insertBefore' : 'insertAfter' ](
-									trigger.is( EDGE_TOP ) ? trigger.lower : trigger.upper );
-							}, true );
-
-							that.editor.focus();
-
-							if ( !env.ie && that.enterMode != CKEDITOR.ENTER_BR )
-								that.hotNode.scrollIntoView();
-
 							event.data.preventDefault( true );
 
-							line.lineChildren[ 1 ].hide();
-							if (command != null && command != undefined) setTimeout(function() { that.editor.execCommand(command) }, 100);
+							lineExecuteCommand(command, line, that, accessFocusSpace);
 						} );
 					}
 				}
 
 			});
 
-			setTimeout(function(){ line.attach(); line.lineChildren[ 1 ].show(); that.hiddenMode = 1; }, 100);
+			if (typeof window.webjethtmlboxDialogCommand === "function") {
+				setTimeout(function(){
+					//in PB we would like to directly open PB content block dialog
+					lineExecuteCommand("webjethtmlboxDialog", line, that, accessFocusSpace);
+				}, 100);
+			} else {
+				setTimeout(function(){
+					line.attach();
+					line.lineChildren[ 1 ].show();
+					that.hiddenMode = 1;
+				}, 100);
+			}
 			event.data.preventDefault( true );
 		} );
 
@@ -848,6 +853,26 @@
 		} );
 
 		that.line = line;
+	}
+
+	function lineExecuteCommand(command, line, that, accessFocusSpace) {
+		line.detach();
+
+		accessFocusSpace( that, function( accessNode ) {
+			// Use old trigger that was saved by 'place' method. Look: line.place
+			var trigger = that.line.trigger;
+
+			accessNode[ trigger.is( EDGE_TOP ) ? 'insertBefore' : 'insertAfter' ](
+				trigger.is( EDGE_TOP ) ? trigger.lower : trigger.upper );
+		}, true );
+
+		that.editor.focus();
+
+		if ( !env.ie && that.enterMode != CKEDITOR.ENTER_BR )
+			that.hotNode.scrollIntoView();
+
+		line.lineChildren[ 1 ].hide();
+		if (command != null && command != undefined) setTimeout(function() { that.editor.execCommand(command) }, 100);
 	}
 
 	// This function allows accessing any focus space according to the insert function:

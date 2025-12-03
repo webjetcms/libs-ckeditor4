@@ -323,7 +323,18 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
 				}
 		);
 
-		editor.addCommand( 'webjethtmlboxDialog', new CKEDITOR.dialogCommand( 'webjethtmlboxDialog' ) );
+		if (typeof window.webjethtmlboxDialogCommand === "function") {
+			editor.addCommand( 'webjethtmlboxDialog', {
+				exec: function() {
+					window.webjethtmlboxDialogCommand( editor );
+				},
+				modes: { wysiwyg: 1, source: 0 },
+				readOnly: 1,
+				canUndo: false
+			} );
+		} else {
+			editor.addCommand( 'webjethtmlboxDialog', new CKEDITOR.dialogCommand( 'webjethtmlboxDialog' ) );
+		}
 
 		editor.ui.addButton( 'Htmlbox', {
 		    label: editor.lang.webjetcomponents.templates,
