@@ -741,6 +741,8 @@
 					var data = mouse_event.data.$;
 
 					if (data.button !== 0 || data.ctrlKey || data.altKey || data.shiftKey) return true;
+					//svgicon has className as object[]
+					if (data.target && typeof data.target.className !== "string") return true;
 					if (data.target && data.target.className.indexOf("cke_")!=-1) return true;
 					if (data.target && data.target.className.indexOf("input")!=-1)
 					{
