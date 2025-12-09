@@ -61,7 +61,7 @@
 
 		return {
 			title: editor.lang.table.title,
-			minWidth: 310,
+			minWidth: 510,
 			minHeight: CKEDITOR.env.ie ? 310 : 280,
 
 			getModel: function( editor ) {
@@ -285,29 +285,30 @@
 					children: [ {
 						type: 'vbox',
 						padding: 0,
-						children: [ {
-							type: 'text',
-							id: 'txtRows',
-							'default': 3,
-							label: editor.lang.table.rows,
-							required: true,
-							controlStyle: 'width:5em',
-							validate: validatorNum( editor.lang.table.invalidRows ),
-							setup: function( selectedElement ) {
-								this.setValue( selectedElement.$.rows.length );
-							},
-							commit: commitValue
-						},
+						children: [
 						{
 							type: 'text',
 							id: 'txtCols',
-							'default': 2,
+							'default': 5,
 							label: editor.lang.table.columns,
 							required: true,
 							controlStyle: 'width:5em',
 							validate: validatorNum( editor.lang.table.invalidCols ),
 							setup: function( selectedTable ) {
 								this.setValue( tableColumns( selectedTable ) );
+							},
+							commit: commitValue
+						},
+						{
+							type: 'text',
+							id: 'txtRows',
+							'default': 2,
+							label: editor.lang.table.rows,
+							required: true,
+							controlStyle: 'width:5em',
+							validate: validatorNum( editor.lang.table.invalidRows ),
+							setup: function( selectedElement ) {
+								this.setValue( selectedElement.$.rows.length );
 							},
 							commit: commitValue
 						},

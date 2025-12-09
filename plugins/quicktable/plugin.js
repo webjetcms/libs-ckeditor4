@@ -5,12 +5,14 @@
 		var conf = editor.config,
 			quickRows = conf.qtRows || 8,
 			quickColumns = conf.qtColumns || 10,
-			quickBorder = conf.qtBorder || '1',
+			quickBorder = conf.qtBorder || '',
 			quickStyle = conf.qtStyle || null,
 			quickClass = conf.qtClass || '',
-			quickCellPadding = conf.qtCellPadding || '1',
-			quickCellSpacing = conf.qtCellSpacing || '1',
-			quickWidth = conf.qtWidth || '100%',
+			quickCellPadding = conf.qtCellPadding || '',
+			quickCellSpacing = conf.qtCellSpacing || '',
+			quickWidth = conf.qtWidth || '',
+			quickHeight = conf.qtHeight || '',
+			quickTableWrapperClass = conf.tableWrapperClass || '',
 			quickPreviewSize = conf.qtPreviewSize || '14px',
 			quickPreviewBorder = conf.qtPreviewBorder || '1px solid #aaa',
 			quickPreviewBackground = conf.qtPreviewBackground || '#e5e5e5';
@@ -42,19 +44,13 @@
 			conf.qtBorder !== null && table.setAttribute( 'border', quickBorder );
 			table.setAttribute( 'class', quickClass );
 			table.setStyles( quickStyle );
-			conf.qtWidth !== null && table.setStyle( 'width', quickWidth );
+			quickWidth !== null && table.setStyle( 'width', quickWidth );
+			quickHeight !== null && table.setStyle( 'height', quickHeight );
 			editor.insertElement( table );
 
 			//webjet
-			table.addClass("tabulkaStandard");
-			if (typeof window.bootstrapVersion != "undefined" && window.bootstrapVersion.indexOf("3")!=0) {
-				//console.log("table=", table);
-				table.removeClass("tabulkaStandard");
-				table.addClass("table");
-				table.addClass("table-sm");
-				//aby to bolo posledne v poradi
-				table.addClass("tabulkaStandard");
-				$(table.$).wrap('<div class="table-responsive"></table>');
+			if (quickTableWrapperClass != null && quickTableWrapperClass != '') {
+				$(table.$).wrap('<div class="' + quickTableWrapperClass + '"></div>');
 			}
 
 			// Fire event for showborders plugin (so hidden borders are visible)
