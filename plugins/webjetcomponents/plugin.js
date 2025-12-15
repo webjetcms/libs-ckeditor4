@@ -899,6 +899,13 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
 						}, 10);
 					}
 				}
+				else if (element.tagName=="INPUT" && (element.type=="button" || element.type=="submit" || element.type=="reset"))
+				{
+					ckEditorInstance.lastWjButton = element;
+					setTimeout(function () {
+							ckEditorInstance.execCommand('button');
+					}, 10);
+				}
 		   });
 		});
 

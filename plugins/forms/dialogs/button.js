@@ -30,6 +30,12 @@ CKEDITOR.dialog.add( 'button', function( editor ) {
 					return element;
 				}
 			}
+			if (typeof ckEditorInstance.lastWjButton != "undefined" && ckEditorInstance.lastWjButton != null)
+			{
+				element = new CKEDITOR.dom.element(ckEditorInstance.lastWjButton);
+                ckEditorInstance.lastWjButton = null;
+				return element;
+			}
 
 			return null;
 		},
