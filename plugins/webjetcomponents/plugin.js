@@ -780,38 +780,45 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
             };
 
             items.button = {
-                    label: editor.lang.webjetcomponents.forms.button,
+                    label: editor.lang.webjetadmin.btnSubmit,
                     group: 'wj_forms_group',
                     command: 'button',
                     order: 9
+            };
+
+			items.webjetformbutton = {
+                    label: editor.lang.webjetformbutton.title,
+                    group: 'wj_forms_group',
+                    command: 'webjetformbutton',
+                    order: 10
             };
 
             items.hiddenfield = {
                     label: editor.lang.webjetcomponents.forms.hidden,
                     group: 'wj_forms_group',
                     command: 'hiddenfield',
-                    order: 10
+                    order: 11
             };
 
             items.label = {
                     label: editor.lang.webjetcomponents.forms.label,
                     group: 'wj_forms_group',
                     command: 'label',
-                    order: 11
+                    order: 12
             };
 
 			items.file = {
 				label: editor.lang.webjetcomponents.forms.file,
 				group: 'wj_forms_group',
 				command: 'file',
-				order: 12
+				order: 13
 			};
 
             items.captcha = {
                     label: editor.lang.webjetcomponents.forms.captcha,
                     group: 'wj_forms_group',
                     command: 'wjInsertCaptcha',
-                    order: 13
+                    order: 14
             };
 
             editor.addMenuItems( items );
