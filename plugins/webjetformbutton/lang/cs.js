@@ -2,6 +2,7 @@ CKEDITOR.plugins.setLang('webjetformbutton', 'cs', {
     title: 'Tlačítko',
     buttonLabel: 'Vložit/Upravit tlačítko',
     general: 'Obecné',
+    attributes: 'Atributy',
     icons: 'Ikony',
     text: 'Text tlačítka',
     type: 'Typ tlačítka',

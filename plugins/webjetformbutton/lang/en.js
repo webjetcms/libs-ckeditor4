@@ -2,6 +2,7 @@ CKEDITOR.plugins.setLang('webjetformbutton', 'en', {
     title: 'Button',
     buttonLabel: 'Insert/Edit Button',
     general: 'General',
+    attributes: 'Attributes',
     icons: 'Icons',
     text: 'Button Text',
     type: 'Button Type',

@@ -18,6 +18,13 @@ CKEDITOR.dialog.add('webjetformbuttonDialog', function(editor) {
         ? config.types.split(',')
         : ['btn-primary', 'btn-secondary', 'btn-success', 'btn-danger', 'btn-warning', 'btn-info', 'btn-light', 'btn-dark', 'btn-link', 'btn-outline-primary', 'btn-outline-secondary', 'btn-outline-success', 'btn-outline-danger', 'btn-outline-warning', 'btn-outline-info', 'btn-outline-light', 'btn-outline-dark'];
 
+    // Parse configurable attributes
+    var attrs = (config.attrs || '').split(',').filter(function(attr) {
+        return attr.trim();
+    }).map(function(attr) {
+        return attr.trim();
+    });
+
     // Parse icons configuration and build groups
     var iconNames = [];
     var allGroups = [];
@@ -460,6 +467,23 @@ CKEDITOR.dialog.add('webjetformbuttonDialog', function(editor) {
         });
     }
 
+    // Attributes elements (only if attributes are configured)
+    var attributesElements = [];
+    if (attrs.length > 0) {
+        attrs.forEach(function(attrName) {
+            var fieldId = attrName.replace(/[^a-zA-Z0-9]/g, '_'); // Sanitize field ID
+            attributesElements.push({
+                type: 'text',
+                id: fieldId,
+                label: attrName,
+                'default': '',
+                setup: function(element) {
+                    this.setValue(element.getAttribute(attrName) || '');
+                }
+            });
+        });
+    }
+
     // Icon elements (only if spritePath is available)
     var iconElements = [];
     if (!shouldHideIconSelector) {
@@ -518,6 +542,15 @@ CKEDITOR.dialog.add('webjetformbuttonDialog', function(editor) {
             elements: generalElements
         }
     ];
+
+    // Add attributes tab only if attributes are configured
+    if (attrs.length > 0) {
+        dialogContents.push({
+            id: 'attributes',
+            label: editor.lang.webjetformbutton.attributes,
+            elements: attributesElements
+        });
+    }
 
     // Add icons tab only if spritePath is available
     if (!shouldHideIconSelector) {
@@ -638,6 +671,17 @@ CKEDITOR.dialog.add('webjetformbuttonDialog', function(editor) {
 
             if (isDisabled) {
                 buttonHtml += ' disabled="disabled" aria-disabled="true"';
+            }
+
+            // Add custom attributes
+            if (attrs.length > 0) {
+                attrs.forEach(function(attrName) {
+                    var fieldId = attrName.replace(/[^a-zA-Z0-9]/g, '_'); // Sanitize field ID
+                    var attrValue = dialog.getValueOf('attributes', fieldId);
+                    if (attrValue && attrValue.trim()) {
+                        buttonHtml += ' ' + attrName + '="' + CKEDITOR.tools.htmlEncode(attrValue) + '"';
+                    }
+                });
             }
 
             buttonHtml += '>';
