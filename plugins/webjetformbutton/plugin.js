@@ -44,6 +44,44 @@ CKEDITOR.plugins.add('webjetformbutton', {
 		       return null;
 		   }
 
+		   // Function to check if element is allowed based on CSS class configuration
+		   function isElementAllowed(element, editor) {
+		       var config = editor.config.webjetformbutton || {};
+		       var className = element.className || '';
+		       var elementClasses = className.split(/\s+/);
+
+		       // Check denied classes first (blacklist takes precedence)
+		       var deniedClasses = config.deniedClasses || '';
+		       if (deniedClasses) {
+		           var deniedList = deniedClasses.split(',');
+		           for (var i = 0; i < deniedList.length; i++) {
+		               var deniedClass = deniedList[i].trim();
+		               if (deniedClass && elementClasses.indexOf(deniedClass) !== -1) {
+		                   return false;
+		               }
+		           }
+		       }
+
+		       // Check allowed classes
+		       var allowedClasses = config.allowedClasses || '';
+		       if (allowedClasses) {
+		           var allowedList = allowedClasses.split(',');
+		           var hasAllowedClass = false;
+		           for (var j = 0; j < allowedList.length; j++) {
+		               var allowedClass = allowedList[j].trim();
+		               if (allowedClass && elementClasses.indexOf(allowedClass) !== -1) {
+		                   hasAllowedClass = true;
+		                   break;
+		               }
+		           }
+		           if (!hasAllowedClass) {
+		               return false;
+		           }
+		       }
+
+		       return true;
+		   }
+
 		   editable.attachListener( editable, 'mouseup', function(evt) {
 		    	// Only handle left mouse button clicks (button 0)
 		    	if (evt.data.$.button !== 0) {
@@ -55,7 +93,7 @@ CKEDITOR.plugins.add('webjetformbutton', {
 
 		    	//console.log("CLICK 2 evt=", evt, "element=", element, "tagName=", element.tagName, "buttonElement=", buttonElement);
 
-				if (buttonElement)
+				if (buttonElement && isElementAllowed(buttonElement, editor))
 				{
                     ckEditorInstance.lastWjButton = buttonElement;
                     setTimeout(function () {

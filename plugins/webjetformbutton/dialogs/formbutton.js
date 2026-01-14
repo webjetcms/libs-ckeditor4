@@ -6,13 +6,16 @@ CKEDITOR.dialog.add('webjetformbuttonDialog', function(editor) {
     var iconWidth = config.iconWidth || 56;
     var iconHeight = config.iconHeight || 56;
     var gridHeight = config.gridHeight || 400;
+
+    //custom config for button
+    config = editor.config.webjetformbutton || {};
     var sizes = (config.sizes || 'btn-lg,btn-sm').split(',');
     var textHiddenClass = config.textHiddenClass || 'visually-hidden';
 
     // Get base class from webjetformbutton config if exists, otherwise use 'btn'
-    var baseClass = (editor.config.webjetformbutton && editor.config.webjetformbutton.baseClass) || 'btn';
-    var buttonTypes = (editor.config.webjetformbutton && editor.config.webjetformbutton.types)
-        ? editor.config.webjetformbutton.types.split(',')
+    var baseClass = config.baseClass || 'btn';
+    var buttonTypes = config.types
+        ? config.types.split(',')
         : ['btn-primary', 'btn-secondary', 'btn-success', 'btn-danger', 'btn-warning', 'btn-info', 'btn-light', 'btn-dark', 'btn-link', 'btn-outline-primary', 'btn-outline-secondary', 'btn-outline-success', 'btn-outline-danger', 'btn-outline-warning', 'btn-outline-info', 'btn-outline-light', 'btn-outline-dark'];
 
     // Parse icons configuration and build groups
