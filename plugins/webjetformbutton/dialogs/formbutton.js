@@ -639,6 +639,7 @@ CKEDITOR.dialog.add('webjetformbuttonDialog', function(editor) {
 
             //console.log("dialog onOk element=", element, "isInsertMode=", isInsertMode);
 
+            // Získanie hodnôt z dialógu
             var buttonText = dialog.getValueOf('general', 'text') || editor.lang.webjetformbutton.defaultText;
             var buttonType = 'button';
             var buttonName = dialog.getValueOf('general', 'name');
@@ -650,12 +651,23 @@ CKEDITOR.dialog.add('webjetformbuttonDialog', function(editor) {
             var hideText = false;
             if (!shouldHideIconSelector) hideText = dialog.getValueOf('general', 'hideText');
 
-            var buttonHtml = '<button type="' + CKEDITOR.tools.htmlEncode(buttonType) + '"';
-
-            if (buttonName) {
-                buttonHtml += ' name="' + CKEDITOR.tools.htmlEncode(buttonName) + '"';
+            // Ak je insert mód, vytvoríme nový prázdny button element
+            if (isInsertMode) {
+                element = CKEDITOR.dom.element.createFromHtml('<button></button>', editor.document);
             }
 
+            // Spoločný kód na nastavenie atribútov pre oba prípady
+            // Nastavíme type atribút
+            element.setAttribute('type', buttonType);
+
+            // Nastavíme alebo odstránime name atribút
+            if (buttonName) {
+                element.setAttribute('name', buttonName);
+            } else {
+                element.removeAttribute('name');
+            }
+
+            // Nastavíme alebo odstránime onclick atribút
             if (buttonOnclick) {
                 // Properly escape JavaScript for use in onclick attribute
                 var escapedOnclick = buttonOnclick
@@ -663,30 +675,41 @@ CKEDITOR.dialog.add('webjetformbuttonDialog', function(editor) {
                     .replace(/"/g, '&quot;')    // Escape double quotes
                     .replace(/\n/g, '\\n')   // Escape newlines
                     .replace(/\r/g, '\\r');  // Escape carriage returns
-                buttonHtml += ' onclick="' + escapedOnclick + '"';
+                element.setAttribute('onclick', escapedOnclick);
+            } else {
+                element.removeAttribute('onclick');
             }
 
+            // Nastavíme class atribút
             var classes = buildButtonClasses(buttonSize, buttonBtnType, customClass);
-            buttonHtml += ' class="' + CKEDITOR.tools.htmlEncode(classes) + '"';
+            element.setAttribute('class', classes);
 
+            // Nastavíme alebo odstránime disabled atribút
             if (isDisabled) {
-                buttonHtml += ' disabled="disabled" aria-disabled="true"';
+                element.setAttribute('disabled', 'disabled');
+                element.setAttribute('aria-disabled', 'true');
+            } else {
+                element.removeAttribute('disabled');
+                element.removeAttribute('aria-disabled');
             }
 
-            // Add custom attributes
+            // Nastavíme custom atribúty
             if (attrs.length > 0) {
                 attrs.forEach(function(attrName) {
                     var fieldId = attrName.replace(/[^a-zA-Z0-9]/g, '_'); // Sanitize field ID
                     var attrValue = dialog.getValueOf('attributes', fieldId);
                     if (attrValue && attrValue.trim()) {
-                        buttonHtml += ' ' + attrName + '="' + CKEDITOR.tools.htmlEncode(attrValue) + '"';
+                        element.setAttribute(attrName, attrValue);
+                    } else {
+                        element.removeAttribute(attrName);
                     }
                 });
             }
 
-            buttonHtml += '>';
+            // Nastavíme innerHTML obsah (ikona + text)
+            var innerHtml = '';
 
-            // Add icon if selected
+            // Pridáme ikonu ak je vybraná
             if (selectedIconName && spritePath) {
                 var iconClass = 'icon ' + buttonSize.replace('btn', 'icon');
                 if (hideText && selectedIconName) {
@@ -694,27 +717,25 @@ CKEDITOR.dialog.add('webjetformbuttonDialog', function(editor) {
                 } else {
                     iconClass += ' btn__icon-left';
                 }
-                buttonHtml += '<svg class="' + iconClass + '" aria-hidden="true">';
-                buttonHtml += '<use xlink:href="' + CKEDITOR.tools.htmlEncode(spritePath + '#' + selectedIconName) + '"></use>';
-                buttonHtml += '</svg>';
+                innerHtml += '<svg class="' + iconClass + '" aria-hidden="true">';
+                innerHtml += '<use xlink:href="' + CKEDITOR.tools.htmlEncode(spritePath + '#' + selectedIconName) + '"></use>';
+                innerHtml += '</svg>';
             }
 
-            // Add text
+            // Pridáme text
             if (hideText && selectedIconName) {
-                buttonHtml += '<span class="' + textHiddenClass + '">' + CKEDITOR.tools.htmlEncode(buttonText) + '</span>';
+                innerHtml += '<span class="' + textHiddenClass + '">' + CKEDITOR.tools.htmlEncode(buttonText) + '</span>';
             } else {
-                buttonHtml += CKEDITOR.tools.htmlEncode(buttonText);
+                innerHtml += CKEDITOR.tools.htmlEncode(buttonText);
             }
 
-            buttonHtml += '</button>';
+            element.setHtml(innerHtml);
 
-            var newElement = CKEDITOR.dom.element.createFromHtml(buttonHtml, editor.document);
-
+            // Finálna akcia podľa módu
             if (isInsertMode) {
-                editor.insertElement(newElement);
+                editor.insertElement(element);
             } else {
-                newElement.replace(element);
-                editor.getSelection().selectElement(newElement);
+                editor.getSelection().selectElement(element);
             }
         }
     };
