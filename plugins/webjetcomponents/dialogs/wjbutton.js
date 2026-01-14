@@ -15,7 +15,67 @@
 
 CKEDITOR.dialog.add( 'wjbuttonDialog', function( editor ) {
 
-	var colorDialog = editor.plugins.colordialog;
+	var config = editor.config.webjetsvgicon || {};
+    var sizes = (config.sizes || 'btn-lg,btn-sm').split(',');
+
+    // Get base class from webjetformbutton config if exists, otherwise use 'btn'
+    var baseClass = (editor.config.webjetformbutton && editor.config.webjetformbutton.baseClass) || 'btn';
+    var buttonTypes = (editor.config.webjetformbutton && editor.config.webjetformbutton.types)
+        ? editor.config.webjetformbutton.types.split(',')
+        : ['btn-primary', 'btn-secondary', 'btn-success', 'btn-danger', 'btn-warning', 'btn-info', 'btn-light', 'btn-dark', 'btn-link', 'btn-outline-primary', 'btn-outline-secondary', 'btn-outline-success', 'btn-outline-danger', 'btn-outline-warning', 'btn-outline-info', 'btn-outline-light', 'btn-outline-dark'];
+
+	var sizeItems = [[editor.lang.webjetformbutton.defaultSize, '']];
+    sizes.forEach(function(size) {
+        sizeItems.push([size, size]);
+    });
+
+    var typeItems = [[editor.lang.webjetformbutton.defaultType, '']];
+    buttonTypes.forEach(function(type) {
+        typeItems.push([type, type]);
+    });
+
+	function parseExistingClasses(element) {
+        var cssClass = element.getAttribute('class') || '';
+        var classes = cssClass.split(/\s+/);
+        var result = { size: '', type: '', custom: [] };
+
+        classes.forEach(function(cls) {
+            if (cls === baseClass) {
+                // Skip base class
+                return;
+            } else if (sizes.indexOf(cls) !== -1) {
+                result.size = cls;
+            } else if (buttonTypes.indexOf(cls) !== -1) {
+                result.type = cls;
+            } else {
+                result.custom.push(cls);
+            }
+        });
+
+        //console.log("parseExistingClasses cssClass=", cssClass, "result=", result);
+
+        return result;
+    }
+
+    function buildButtonClasses(size, type, customClasses) {
+        var classes = [baseClass];
+
+        if (size) classes.push(size);
+        if (type) classes.push(type);
+
+        // Add custom classes, filtering out conflicting size/type classes
+        if (customClasses) {
+            var customArray = customClasses.split(/\s+/).filter(function(cls) {
+                if (!cls) return false;
+                if (cls === baseClass) return false;
+                if (sizes.indexOf(cls) !== -1 || buttonTypes.indexOf(cls) !== -1) return false;
+                return true;
+            });
+            classes = classes.concat(customArray);
+        }
+
+        return classes.join(' ');
+    }
 
 	return {
 		title: editor.lang.webjetcomponents.wjbutton.title,
@@ -109,146 +169,35 @@ CKEDITOR.dialog.add( 'wjbuttonDialog', function( editor ) {
 						]
 					},
 					{
-						type: 'hbox',
-						padding: 0,
-						widths: [ '48%', '4%', '48%' ],
-						children: [
-							{
-								type: 'text',
-								id: 'font-size',
-								label: editor.lang.webjetcomponents.wjbutton.fontSize,
-								setup: function( element ) {
-									var suffix= '';
-									if(element.getStyle('font-size').split('px')[0]!="") suffix='px';
-									this.setValue( element.getStyle('font-size').split('px')[0] + suffix);
-								},
-								commit: function( element )
-								{
-									if (this.getValue() != "")
-									{
-										var suffix= '';
-										if(this.getValue().indexOf('px')<0) suffix = 'px';
-										element.setStyle( 'font-size', this.getValue().replace(/\ /g,'') + suffix);
-									}
-									else
-									{
-										element.removeStyle( 'font-size' );
-									}
-								}
-							},
-							{
-								type: 'html',
-								html: '&nbsp;'
-							},
-							{
-								type: 'text',
-								id: 'border-radius',
-								label: editor.lang.webjetcomponents.wjbutton.borderRadius,
-								setup: function( element ) {
-										var suffix= '';
-										if(element.getStyle('border-radius').split('px')[0]!="") suffix='px';
-									this.setValue( element.getStyle('border-radius').split('px')[0] + suffix);
-								},
-								commit: function( element )
-								{
-									if (this.getValue() != "")
-									{
-										var suffix= '';
-										if(this.getValue().indexOf('px')<0) suffix = 'px';
-										element.setStyle( 'border-radius', this.getValue().replace(/\ /g,'') + suffix);
-									}
-									else
-									{
-										element.removeStyle( 'border-radius' );
-									}
-								}
-							}]
+						type: 'select',
+						id: 'buttonType',
+						label: editor.lang.webjetformbutton.buttonType,
+						'default': '',
+						items: typeItems,
+						setup: function(element) {
+							var parsedClasses = parseExistingClasses(element);
+							this.setValue(parsedClasses.type);
+						}
 					},
 					{
-						type: 'hbox',
-						padding: 0,
-						widths: [ '48%', '4%', '48%' ],
-						children: [
-						{
-							type: 'hbox',
-							padding: 0,
-							widths: [ '70%', '30%' ],
-							children: [ {
-								type: 'text',
-								id: 'bgColor',
-								label: editor.lang.webjetcomponents.wjbutton.bgColor,
-								'default': '',
-								setup: function( element ) {
-									this.setValue( element.getStyle('background-color') );
-								},
-								commit: function( element ) {
-									var value = this.getValue();
-
-									if ( value )
-										element.setStyle( 'background-color', this.getValue() );
-									else
-										element.removeStyle( 'background-color' );
-								}
-							},
-							{
-								type: 'button',
-								id: 'bgColorChoose',
-								'class': 'colorChooser',
-								label: editor.lang.webjetcomponents.wjbutton.choose,
-								onLoad: function() {
-									this.getElement().getParent().setStyle( 'vertical-align', 'bottom' );
-								},
-								onClick: function() {
-									editor.getColorFromDialog( function( color ) {
-										if ( color )
-											this.getDialog().getContentElement( 'tab-basic', 'bgColor' ).setValue( color );
-										this.focus();
-									}, this );
-								}
-							} ]
-						},
-						{
-							type: 'html',
-							html: '&nbsp;'
-						},
-						{
-							type: 'hbox',
-							padding: 0,
-							widths: [ '70%', '30%' ],
-							children: [ {
-								type: 'text',
-								id: 'fgColor',
-								label: editor.lang.webjetcomponents.wjbutton.textColor,
-								'default': '',
-								setup: function( element ) {
-									this.setValue( element.getStyle('color') );
-								},
-								commit: function( element ) {
-									var value = this.getValue();
-
-									if ( value )
-										element.setStyle( 'color', this.getValue() );
-									else
-										element.removeStyle( 'color' );
-								}
-							},
-							{
-								type: 'button',
-								id: 'fgColorChoose',
-								'class': 'colorChooser',
-								label: editor.lang.webjetcomponents.wjbutton.choose,
-								onLoad: function() {
-									this.getElement().getParent().setStyle( 'vertical-align', 'bottom' );
-								},
-								onClick: function() {
-									editor.getColorFromDialog( function( color ) {
-										if ( color )
-											this.getDialog().getContentElement( 'tab-basic', 'fgColor' ).setValue( color );
-										this.focus();
-									}, this );
-								}
-							}]
-						}]
+						type: 'select',
+						id: 'size',
+						label: editor.lang.webjetformbutton.size,
+						'default': '',
+						items: sizeItems,
+						setup: function(element) {
+							var parsedClasses = parseExistingClasses(element);
+							this.setValue(parsedClasses.size);
+						}
+					},
+					{
+						type: 'text',
+						id: 'customClass',
+						label: editor.lang.webjetformbutton.customClass,
+						setup: function(element) {
+							var parsedClasses = parseExistingClasses(element);
+							this.setValue(parsedClasses.custom.join(' '));
+						}
 					}
 				]
 			}
@@ -285,6 +234,13 @@ CKEDITOR.dialog.add( 'wjbuttonDialog', function( editor ) {
 			var dialog = this;
 			var simple_btn = this.element;
 			this.commitContent( simple_btn );
+
+            var buttonSize = dialog.getValueOf('tab-basic', 'size');
+            var buttonBtnType = dialog.getValueOf('tab-basic', 'buttonType');
+            var customClass = dialog.getValueOf('tab-basic', 'customClass');
+
+			var classes = buildButtonClasses(buttonSize, buttonBtnType, customClass);
+			simple_btn.setAttribute('class', classes);
 
 			if ( this.insertMode )
 				editor.insertElement( simple_btn );
