@@ -266,7 +266,7 @@ CKEDITOR.STYLE_OBJECT = 3;
 			{
 				if (this.element == "span" && range.getCommonAncestor().$.parentNode.tagName == "SPAN") {
 					applyObjectStyle.call(this, range);
-				} else if (this.element) {
+				} else if (this.element && typeof this._.definition != "undefined" && typeof this._.definition.attributes != "undefined") {
 					//pagebuilder - dohladanie parent elementov a aplikovanie na neho
 					var failsafe = 0;
 					var parent = range.getCommonAncestor().$.parentNode;
