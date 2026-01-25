@@ -389,7 +389,7 @@
 		CACHE_TIME = 100,
 
 		// Shared CSS stuff for box elements
-		CSS_COMMON = 'width:0px;height:0px;padding:0px;margin:0px;display:block;' + 'z-index:9999;color:#fff;position:absolute;font-size: 0px;line-height:0px;',
+		CSS_COMMON = 'width:0px;height:0px;padding:0px;margin:0px;display:block;' + 'z-index:1010020;color:#fff;position:absolute;font-size: 0px;line-height:0px;',
 		CSS_TRIANGLE = CSS_COMMON + 'border-color:transparent;display:block;border-style:solid;',
 		TRIANGLE_HTML = '<span class="wjmagiclineTriangle">' + WHITE_SPACE + '</span>';
 

@@ -264,8 +264,9 @@ CKEDITOR.STYLE_OBJECT = 3;
 			//webjet aby sa dal menit uz existujuci span za inu triedu
 			try
 			{
-				if (this.element == "span" && range.getCommonAncestor().$.parentNode.tagName == "SPAN") applyObjectStyle.call(this, range);
-				if (this.element == "section" || this.element == "div") {
+				if (this.element == "span" && range.getCommonAncestor().$.parentNode.tagName == "SPAN") {
+					applyObjectStyle.call(this, range);
+				} else if (this.element) {
 					//pagebuilder - dohladanie parent elementov a aplikovanie na neho
 					var failsafe = 0;
 					var parent = range.getCommonAncestor().$.parentNode;
@@ -281,12 +282,10 @@ CKEDITOR.STYLE_OBJECT = 3;
 					}
 
 					//console.log("styleTag=", styleTag, "styleClassName=", styleClassName);
-					var styleSet = ckEditorInstance.config.stylesSet;
 					while (failsafe++ < 30 && parent != null) {
 						var id = parent.getAttribute("id");
-						var className = parent.getAttribute("className");
 						var tag = parent.tagName.toLowerCase();
-						//console.log("Testing parent=", parent, " id="+id+" className=", className, " tag=", tag);
+						//console.log("Testing parent=", parent, " id="+id+" tag=", tag, "styleTag=", styleTag, "requiredClassName=", requiredClassName, "styleClassName=", styleClassName);
 
 						if ((requiredClassName==null && tag==styleTag) ||
 						    (tag==styleTag && $(parent).hasClass(requiredClassName)) ) {
@@ -294,19 +293,9 @@ CKEDITOR.STYLE_OBJECT = 3;
 							//console.log("Setting CSS style ", styleClassName);
 							//over, ci uz tuto CSS triedu nema, aby sa dala aj vypnut znova nastavenim
 							var allreadyHasClass = $(parent).hasClass(styleClassName);
-							//console.log("allreadyHasClass=", allreadyHasClass);
-							//removni existujuce CSS triedy
-							for (var j=0; j<styleSet.length; j++) {
-								if (styleSet[j].hasOwnProperty("attributes")==false) continue;
-								var removeClass = styleSet[j].attributes["class"];
-								space = removeClass.indexOf(" ");
-								//ak je to vo formate "container div01" nechceme odstranit css container
-								if (space > 0) removeClass = removeClass.substring(space+1);
-								//console.log("removing class", removeClass);
-								$(parent).removeClass(removeClass);
-							}
 							//nastav novu CSS triedu
 							if (allreadyHasClass==false) $(parent).addClass(styleClassName);
+							else $(parent).removeClass(styleClassName);
 							return;
 						}
 
@@ -318,9 +307,16 @@ CKEDITOR.STYLE_OBJECT = 3;
 				}
 			} catch (e) { console.log(e); }
 
-			if (this.type == CKEDITOR.STYLE_INLINE) applyInlineStyle.call(this, range) ;
-			else if (this.type == CKEDITOR.STYLE_BLOCK) applyBlockStyle.call(this, range) ;
-			else if (this.type == CKEDITOR.STYLE_OBJECT) applyObjectStyle.call(this, range) ;
+			var isActive = this.checkActiveParents(null, null, range);
+			//console.log("Applying style type=", this.type, "on range=", range, " isActive=", isActive);
+
+			if (isActive === true) {
+				this.removeFromRange(range);
+			} else {
+				if (this.type == CKEDITOR.STYLE_INLINE) applyInlineStyle.call(this, range) ;
+				else if (this.type == CKEDITOR.STYLE_BLOCK) applyBlockStyle.call(this, range) ;
+				else if (this.type == CKEDITOR.STYLE_OBJECT) applyObjectStyle.call(this, range) ;
+			}
 		},
 
 		/**
@@ -399,6 +395,64 @@ CKEDITOR.STYLE_OBJECT = 3;
 							return true;
 					}
 			}
+
+			return false;
+		},
+
+		checkActiveParents: function( elementPath, editor, range ) {
+			//if ( this.type === CKEDITOR.STYLE_BLOCK) {
+				//webjet aby sa dal menit uz existujuci span za inu triedu
+				try
+				{
+					//if (this.element == "section" || this.element == "div") {
+						//pagebuilder - dohladanie parent elementov a aplikovanie na neho
+						if (typeof range === "undefined" || range==null) {
+							var selection = editor.getSelection();
+							range = selection.getRanges()[0];
+						}
+
+						var failsafe = 0;
+						var parent = range.getCommonAncestor().$.parentNode;
+						//if ("baretest2" === styleClassName) console.log("checkActiveParents parent=", parent);
+						var styleTag = "*";
+						if (typeof this.element == "string") styleTag = this.element.toLowerCase();
+
+						if (typeof this._.definition.attributes == "undefined") return false;
+
+						var styleClassName = this._.definition.attributes["class"];
+
+						var space = styleClassName.indexOf(" ");
+						var requiredClassName = null;
+						if (space > 0) {
+							//ak je to vo formate "container div01"
+							requiredClassName = styleClassName.substring(0, space);
+							styleClassName = styleClassName.substring(space+1);
+						}
+
+						//if ("baretest2" === styleClassName) console.log("styleTag=", styleTag, "styleClassName=", styleClassName);
+						while (failsafe++ < 30 && parent != null) {
+							var id = parent.getAttribute("id");
+							var tag = parent.tagName.toLowerCase();
+							//if ("baretest2" === styleClassName) console.log("Testing parent=", parent, " id=", id, "tag=", tag);
+
+							if ((requiredClassName==null && (tag==styleTag || styleTag=="*")) ||
+								(tag==styleTag && $(parent).hasClass(requiredClassName)) ) {
+
+								//console.log("Setting CSS style ", styleClassName);
+								//over, ci uz tuto CSS triedu nema, aby sa dala aj vypnut znova nastavenim
+								var allreadyHasClass = $(parent).hasClass(styleClassName);
+								//console.log("allreadyHasClass=", allreadyHasClass);
+								if (allreadyHasClass) return true;
+							}
+
+							if (id != null) {
+								if (id=="WebJETEditorBody" || id.indexOf("wjInline-")!=-1) break;
+							}
+							parent = parent.parentNode;
+						}
+					//}
+				} catch (e) { console.log(e); }
+			//}
 			return false;
 		},
 

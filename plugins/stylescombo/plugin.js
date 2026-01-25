@@ -172,7 +172,8 @@
 						else
 							this.hideItem( name );
 
-						if ( style.checkActive( elementPath, editor ) )
+						//console.log("checkActive", name, style, "checkActive=", style.checkActive( elementPath, editor ), "checkActiveParents=", style.checkActiveParents(elementPath, editor) );
+						if ( style.checkActive( elementPath, editor ) || style.checkActiveParents(elementPath, editor) )
 							this.mark( name );
 					}
 
