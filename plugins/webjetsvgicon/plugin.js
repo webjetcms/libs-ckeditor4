@@ -41,16 +41,34 @@ CKEDITOR.plugins.add('webjetsvgicon', {
                             return;
                         }
 
-                        //remove previously selected icons
-                        var previouslySelected = editor.document.find('.svg-icon-selected');
-                        for (var i=0; i<previouslySelected.count(); i++) {
-                            previouslySelected.getItem(i).removeClass('svg-icon-selected');
-                        }
-                        //add class to currently selected icon
-                        svgElement.classList.add('svg-icon-selected');
+                        //normal click should open dialog
+                        if (evt.data.$.button === 0) {
+                            //remove previously selected icons
+                            var previouslySelected = editor.document.find('.svg-icon-selected');
+                            for (var i=0; i<previouslySelected.count(); i++) {
+                                previouslySelected.getItem(i).removeClass('svg-icon-selected');
+                            }
+                            //add class to currently selected icon
+                            svgElement.classList.add('svg-icon-selected');
 
-                        //open svg icon dialog
-                        editor.execCommand('webjetsvgicon');
+                            //open svg icon dialog
+                            editor.execCommand('webjetsvgicon');
+                        } else if (evt.data.$.button === 2) {
+                            //right click should show delete confirmation
+                            evt.data.$.preventDefault();
+                            evt.data.$.stopPropagation();
+
+                            var confirmMessage = editor.lang.webjetsvgicon.deleteConfirm || 'Do you want to delete this icon?';
+
+                            if (confirm(confirmMessage)) {
+                                //remove the SVG element
+                                var svgCKElement = new CKEDITOR.dom.element(svgElement);
+                                svgCKElement.remove();
+
+                                //update editor content
+                                editor.fire('change');
+                            }
+                        }
                     }
                 } catch (e) {
                     console.error("Error in webjetsvgicon mouseup handler", e);

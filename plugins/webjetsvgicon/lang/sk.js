@@ -15,5 +15,6 @@ CKEDITOR.plugins.setLang('webjetsvgicon', 'sk', {
     loadingIcons: 'Načítavam ikony...',
     loadError: 'Chyba pri načítaní ikon',
     noIconsFound: 'Nenašli sa žiadne ikony zodpovedajúce aktuálnym filtrom.',
-    noIconSelected: 'Pred pokračovaním prosím vyberte ikonu.'
+    noIconSelected: 'Pred pokračovaním prosím vyberte ikonu.',
+    deleteConfirm: 'Naozaj chcete vymazať túto ikonu?'
 });

@@ -966,6 +966,9 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
 
 				var tagName = element.$.tagName;
 				if ( deletableElements[ tagName ] ) {
+					//skip for elements with className pb-tooltip
+					if (element.$.className && element.$.className.indexOf("pb-tooltip")!=-1) return null;
+
 					deleteElementData = element;
 					return { deleteElementItem: CKEDITOR.TRISTATE_OFF };
 				}
