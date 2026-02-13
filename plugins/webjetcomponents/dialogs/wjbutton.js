@@ -19,7 +19,7 @@ CKEDITOR.dialog.add( 'wjbuttonDialog', function( editor ) {
     var sizes = (config.sizes || 'btn-lg,btn-sm').split(',');
 
     // Get base class from webjetformbutton config if exists, otherwise use 'btn'
-    var baseClass = (editor.config.webjetformbutton && editor.config.webjetformbutton.baseClass) || 'btn';
+    var baseClass = editor.config.webjetformbutton.baseClass;
     var buttonTypes = (editor.config.webjetformbutton && editor.config.webjetformbutton.types)
         ? editor.config.webjetformbutton.types.split(',')
         : ['btn-primary', 'btn-secondary', 'btn-success', 'btn-danger', 'btn-warning', 'btn-info', 'btn-light', 'btn-dark', 'btn-link', 'btn-outline-primary', 'btn-outline-secondary', 'btn-outline-success', 'btn-outline-danger', 'btn-outline-warning', 'btn-outline-info', 'btn-outline-light', 'btn-outline-dark'];
@@ -74,7 +74,7 @@ CKEDITOR.dialog.add( 'wjbuttonDialog', function( editor ) {
             classes = classes.concat(customArray);
         }
 
-        return classes.join(' ');
+        return classes.join(' ').trim();
     }
 
 	return {

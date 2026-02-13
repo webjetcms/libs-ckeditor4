@@ -50,6 +50,10 @@ CKEDITOR.plugins.setLang( 'webjetcomponents', 'sk', {
 	aibutton:
 	{
 		title: 'AI asistent'
+	},
+	deleteElement:
+	{
+		label: 'Zmazať element'
 	}
 } );
 

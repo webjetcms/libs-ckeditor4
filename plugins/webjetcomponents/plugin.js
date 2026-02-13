@@ -884,13 +884,15 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
 		   var editable = editor.editable();
 		   editable.attachListener( editable, 'mouseup', function(evt) {
 		    	var element = evt.data.$.target;
+				//skip for right click
+				if (evt.data.$.button != 0) return;
+
 		    	//console.log("CLICK 2 evt=", evt);
 				if (element.tagName=="A")
 				{
 					//pre display block alebo inline-block tiez musime zobrazit editor
-					var displayStyle = window.getComputedStyle(element, null).getPropertyValue("display");
-					if (displayStyle == null) displayStyle = "";
-					if (element.className.indexOf('btn-')!=-1 || displayStyle.indexOf("block")!=-1)
+					var baseClass = editor.config.webjetformbutton.baseClass;
+					if (element.className.indexOf(baseClass)!=-1)
 					{
 						ckEditorInstance.lastWjButton = element;
 						setTimeout(function () {
@@ -917,6 +919,59 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
 		});
 
         CKEDITOR.dialog.add( 'wjbuttonDialog', this.path + 'dialogs/wjbutton.js' );
+
+		//Delete Element
+		var deleteElementData = null;
+
+		// List of elements that can be deleted
+		var deletableElements = {
+			'P': true,        // Paragraph
+			'H1': true, 'H2': true, 'H3': true, 'H4': true, 'H5': true, 'H6': true,  // Headings
+			'DIV': true,      // Division
+			'SPAN': true,     // Span
+			'TABLE': true,    // Table
+			'IMG': true,    // Image
+			'BUTTON': true,   // Button
+			'A': true,        // Link
+			'FORM': true,     // Form
+			'INPUT': true,     // Form input
+			'BLOCKQUOTE': true, // Blockquote
+			'SECTION': true,  // Section
+			'UL': true,       // Unordered list
+			'OL': true,       // Ordered list
+			'LI': true,       // List item
+		};
+
+		editor.addCommand( 'deleteElement', {
+			exec: function( editor ) {
+				if ( deleteElementData ) {
+					deleteElementData.remove();
+					deleteElementData = null;
+				}
+			}
+		} );
+
+		if ( editor.contextMenu ) {
+			editor.addMenuGroup( 'deleteElementGroup' );
+			editor.addMenuItem( 'deleteElementItem', {
+				label: editor.lang.webjetcomponents.deleteElement.label,
+				command: 'deleteElement',
+				group: 'deleteElementGroup',
+				icon: this.path + 'icons/trash.svg'
+			});
+
+			editor.contextMenu.addListener( function( element ) {
+				if ( !element || element.isReadOnly() )
+					return null;
+
+				var tagName = element.$.tagName;
+				if ( deletableElements[ tagName ] ) {
+					deleteElementData = element;
+					return { deleteElementItem: CKEDITOR.TRISTATE_OFF };
+				}
+				return null;
+			});
+		}
 
 		if (getAiButtonReal(editor)!=null) {
 			editor.addCommand( 'aibutton', {
