@@ -27,7 +27,7 @@ CKEDITOR.plugins.add('webjetsvgicon', {
 
         editor.on( 'contentDom', function() {
 		   var editable = editor.editable();
-		   editable.attachListener( editable, 'mouseup', function(evt) {
+		   editable.attachListener( editable, 'mousedown', function(evt) {
                 try {
                     var element = evt.data.$.target;
                     if (element.tagName.toUpperCase() =="SVG" ||
