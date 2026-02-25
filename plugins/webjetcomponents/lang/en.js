@@ -45,7 +45,14 @@ CKEDITOR.plugins.setLang( 'webjetcomponents', 'en', {
 		target: 'Link Target',
 		bgColor: 'Background color',
 		choose: 'Choose',
-		textColor: 'Font color'
+		textColor: 'Font color',
+		general: 'General',
+		advanced: 'Advanced',
+		id: 'ID',
+		rel: 'Relationship (rel)',
+		advisoryTitle: 'Advisory Title',
+		name: 'Name',
+		ariaLabel: 'Aria Label'
 	},
 	aibutton:
 	{

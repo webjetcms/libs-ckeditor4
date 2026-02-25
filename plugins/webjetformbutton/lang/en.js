@@ -2,6 +2,7 @@ CKEDITOR.plugins.setLang('webjetformbutton', 'en', {
     title: 'Button',
     buttonLabel: 'Insert/Edit Button',
     general: 'General',
+    advanced: 'Advanced',
     attributes: 'Attributes',
     icons: 'Icons',
     text: 'Button Text',
@@ -24,5 +25,9 @@ CKEDITOR.plugins.setLang('webjetformbutton', 'en', {
     iconSearch: 'Search icons',
     noIconsFound: 'No icons found',
     loadingIcons: 'Loading icons...',
-    loadError: 'Failed to load icons'
+    loadError: 'Failed to load icons',
+    id: 'ID',
+    advisoryTitle: 'Advisory Title',
+    ariaLabel: 'Aria Label',
+    tabindex: 'Tab Index'
 });

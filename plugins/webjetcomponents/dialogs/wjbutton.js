@@ -84,6 +84,7 @@ CKEDITOR.dialog.add( 'wjbuttonDialog', function( editor ) {
 		contents: [
 			{
 				id: 'tab-basic',
+				label: editor.lang.webjetcomponents.wjbutton.general,
 				elements: [
 					{
 						type: 'text',
@@ -113,12 +114,7 @@ CKEDITOR.dialog.add( 'wjbuttonDialog', function( editor ) {
 								var href = this.getValue();
 								element.setAttribute( "href", href );
 								element.removeAttribute('data-cke-saved-href');
-
-								if (href.indexOf("http")==0 || href.indexOf("www.")==0){
-									element.setAttribute('rel',"nofollow noopener noreferrer");
-								}else {
-									if ("nofollow noopener noreferrer"==element.getAttribute('rel')) element.removeAttribute('rel');
-								}
+								// rel attribute is now handled in Advanced tab
 							}
 						},
 						{
@@ -189,6 +185,25 @@ CKEDITOR.dialog.add( 'wjbuttonDialog', function( editor ) {
 							var parsedClasses = parseExistingClasses(element);
 							this.setValue(parsedClasses.size);
 						}
+					}
+				]
+			},
+			{
+				id: 'tab-advanced',
+				label: editor.lang.webjetcomponents.wjbutton.advanced,
+				elements: [
+					{
+						type: 'text',
+						id: 'advId',
+						label: editor.lang.webjetcomponents.wjbutton.id,
+						setup: function(element) {
+							this.setValue(element.getAttribute('id') || '');
+						},
+						commit: function(element) {
+							var value = this.getValue();
+							if (value) element.setAttribute('id', value);
+							else element.removeAttribute('id');
+						}
 					},
 					{
 						type: 'text',
@@ -197,6 +212,70 @@ CKEDITOR.dialog.add( 'wjbuttonDialog', function( editor ) {
 						setup: function(element) {
 							var parsedClasses = parseExistingClasses(element);
 							this.setValue(parsedClasses.custom.join(' '));
+						}
+					},
+					{
+						type: 'text',
+						id: 'advTitle',
+						label: editor.lang.webjetcomponents.wjbutton.advisoryTitle,
+						setup: function(element) {
+							this.setValue(element.getAttribute('title') || '');
+						},
+						commit: function(element) {
+							var value = this.getValue();
+							if (value) element.setAttribute('title', value);
+							else element.removeAttribute('title');
+						}
+					},
+					{
+						type: 'text',
+						id: 'advName',
+						label: editor.lang.webjetcomponents.wjbutton.name,
+						setup: function(element) {
+							this.setValue(element.getAttribute('name') || '');
+						},
+						commit: function(element) {
+							var value = this.getValue();
+							if (value) element.setAttribute('name', value);
+							else element.removeAttribute('name');
+
+							element.removeAttribute('data-cke-saved-name');
+						}
+					},
+					{
+						type: 'text',
+						id: 'advRel',
+						label: editor.lang.webjetcomponents.wjbutton.rel,
+						setup: function(element) {
+							this.setValue(element.getAttribute('rel') || '');
+						},
+						commit: function(element) {
+							var value = this.getValue();
+							if (value) {
+								element.setAttribute('rel', value);
+							} else {
+								// Auto-set rel for external links if not specified
+								var dialog = this.getDialog();
+								var href = dialog.getContentElement('tab-basic', 'url').getValue();
+								if (href && (href.indexOf("http") == 0 || href.indexOf("www.") == 0)) {
+									element.setAttribute('rel', 'nofollow noopener noreferrer');
+								} else {
+									element.removeAttribute('rel');
+								}
+							}
+						}
+					},
+					{
+						type: 'text',
+						id: 'advAriaLabel',
+						label: editor.lang.webjetcomponents.wjbutton.ariaLabel,
+						setup: function(element) {
+							this.setValue(element.getAttribute('aria-label') || '');
+						},
+						commit: function(element) {
+							var value = this.getValue();
+							if (value) element.setAttribute('aria-label', value);
+							else element.removeAttribute('aria-label');
 						}
 					}
 				]
@@ -237,7 +316,7 @@ CKEDITOR.dialog.add( 'wjbuttonDialog', function( editor ) {
 
             var buttonSize = dialog.getValueOf('tab-basic', 'size');
             var buttonBtnType = dialog.getValueOf('tab-basic', 'buttonType');
-            var customClass = dialog.getValueOf('tab-basic', 'customClass');
+            var customClass = dialog.getValueOf('tab-advanced', 'customClass');
 
 			var classes = buildButtonClasses(buttonSize, buttonBtnType, customClass);
 			simple_btn.setAttribute('class', classes);

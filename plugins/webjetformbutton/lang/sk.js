@@ -2,6 +2,7 @@ CKEDITOR.plugins.setLang('webjetformbutton', 'sk', {
     title: 'Tlačidlo',
     buttonLabel: 'Vložiť/Upraviť tlačidlo',
     general: 'Všeobecné',
+    advanced: 'Rozšírené',
     attributes: 'Atribúty',
     icons: 'Ikony',
     text: 'Text tlačidla',
@@ -24,5 +25,9 @@ CKEDITOR.plugins.setLang('webjetformbutton', 'sk', {
     iconSearch: 'Hľadať ikony',
     noIconsFound: 'Nenašli sa žiadne ikony',
     loadingIcons: 'Načítavam ikony...',
-    loadError: 'Nepodarilo sa načítať ikony'
+    loadError: 'Nepodarilo sa načítať ikony',
+    id: 'ID',
+    advisoryTitle: 'Pomocný titulok',
+    ariaLabel: 'Popis pre čítačky (aria-label)',
+    tabindex: 'Poradie prvku (tabindex)'
 });

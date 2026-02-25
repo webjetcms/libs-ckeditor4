@@ -434,23 +434,6 @@ CKEDITOR.dialog.add('webjetformbuttonDialog', function(editor) {
                 var parsedClasses = parseExistingClasses(element);
                 this.setValue(parsedClasses.size);
             }
-        },
-        {
-            type: 'text',
-            id: 'customClass',
-            label: editor.lang.webjetformbutton.customClass,
-            setup: function(element) {
-                var parsedClasses = parseExistingClasses(element);
-                this.setValue(parsedClasses.custom.join(' '));
-            }
-        },
-        {
-            type: 'checkbox',
-            id: 'disabled',
-            label: editor.lang.webjetformbutton.disabled,
-            setup: function(element) {
-                this.setValue(element.hasAttribute('disabled'));
-            }
         }
     ];
 
@@ -466,6 +449,59 @@ CKEDITOR.dialog.add('webjetformbuttonDialog', function(editor) {
             }
         });
     }
+
+    // Advanced elements
+    var advancedElements = [
+        {
+            type: 'text',
+            id: 'advId',
+            label: editor.lang.webjetformbutton.id,
+            setup: function(element) {
+                this.setValue(element.getAttribute('id') || '');
+            }
+        },
+        {
+            type: 'text',
+            id: 'customClass',
+            label: editor.lang.webjetformbutton.customClass,
+            setup: function(element) {
+                var parsedClasses = parseExistingClasses(element);
+                this.setValue(parsedClasses.custom.join(' '));
+            }
+        },
+        {
+            type: 'text',
+            id: 'advTitle',
+            label: editor.lang.webjetformbutton.advisoryTitle,
+            setup: function(element) {
+                this.setValue(element.getAttribute('title') || '');
+            }
+        },
+        {
+            type: 'text',
+            id: 'advTabindex',
+            label: editor.lang.webjetformbutton.tabindex,
+            setup: function(element) {
+                this.setValue(element.getAttribute('tabindex') || '');
+            }
+        },
+        {
+            type: 'text',
+            id: 'advAriaLabel',
+            label: editor.lang.webjetformbutton.ariaLabel,
+            setup: function(element) {
+                this.setValue(element.getAttribute('aria-label') || '');
+            }
+        },
+        {
+            type: 'checkbox',
+            id: 'disabled',
+            label: editor.lang.webjetformbutton.disabled,
+            setup: function(element) {
+                this.setValue(element.hasAttribute('disabled'));
+            }
+        }
+    ];
 
     // Attributes elements (only if attributes are configured)
     var attributesElements = [];
@@ -540,6 +576,11 @@ CKEDITOR.dialog.add('webjetformbuttonDialog', function(editor) {
             id: 'general',
             label: editor.lang.webjetformbutton.general,
             elements: generalElements
+        },
+        {
+            id: 'advanced',
+            label: editor.lang.webjetformbutton.advanced,
+            elements: advancedElements
         }
     ];
 
@@ -646,8 +687,12 @@ CKEDITOR.dialog.add('webjetformbuttonDialog', function(editor) {
             var buttonOnclick = dialog.getValueOf('general', 'onclick');
             var buttonSize = dialog.getValueOf('general', 'size');
             var buttonBtnType = dialog.getValueOf('general', 'buttonType');
-            var customClass = dialog.getValueOf('general', 'customClass');
-            var isDisabled = dialog.getValueOf('general', 'disabled');
+            var customClass = dialog.getValueOf('advanced', 'customClass');
+            var isDisabled = dialog.getValueOf('advanced', 'disabled');
+            var advId = dialog.getValueOf('advanced', 'advId');
+            var advTitle = dialog.getValueOf('advanced', 'advTitle');
+            var advAriaLabel = dialog.getValueOf('advanced', 'advAriaLabel');
+            var advTabindex = dialog.getValueOf('advanced', 'advTabindex');
             var hideText = false;
             if (!shouldHideIconSelector) hideText = dialog.getValueOf('general', 'hideText');
 
@@ -691,6 +736,31 @@ CKEDITOR.dialog.add('webjetformbuttonDialog', function(editor) {
             } else {
                 element.removeAttribute('disabled');
                 element.removeAttribute('aria-disabled');
+            }
+
+            // Nastavíme rozšírené atribúty (id, title, aria-label, tabindex)
+            if (advId) {
+                element.setAttribute('id', advId);
+            } else {
+                element.removeAttribute('id');
+            }
+
+            if (advTitle) {
+                element.setAttribute('title', advTitle);
+            } else {
+                element.removeAttribute('title');
+            }
+
+            if (advAriaLabel) {
+                element.setAttribute('aria-label', advAriaLabel);
+            } else {
+                element.removeAttribute('aria-label');
+            }
+
+            if (advTabindex) {
+                element.setAttribute('tabindex', advTabindex);
+            } else {
+                element.removeAttribute('tabindex');
             }
 
             // Nastavíme custom atribúty

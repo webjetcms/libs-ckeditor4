@@ -45,7 +45,14 @@ CKEDITOR.plugins.setLang( 'webjetcomponents', 'cs', {
 		target: 'Cíl odkazu',
 		bgColor: 'Barva pozadí',
 		choose: 'Vybrat',
-		textColor: 'Barva písma'
+		textColor: 'Barva písma',
+		general: 'Obecné',
+		advanced: 'Rozšířené',
+		id: 'ID',
+		rel: 'Vztah (rel)',
+		advisoryTitle: 'Pomocný titulek',
+		name: 'Název (name)',
+		ariaLabel: 'Popis pro čtečky (aria-label)'
 	},
 	aibutton:
 	{

@@ -2,6 +2,7 @@ CKEDITOR.plugins.setLang('webjetformbutton', 'cs', {
     title: 'Tlačítko',
     buttonLabel: 'Vložit/Upravit tlačítko',
     general: 'Obecné',
+    advanced: 'Rozšířené',
     attributes: 'Atributy',
     icons: 'Ikony',
     text: 'Text tlačítka',
@@ -24,5 +25,9 @@ CKEDITOR.plugins.setLang('webjetformbutton', 'cs', {
     iconSearch: 'Hledat ikony',
     noIconsFound: 'Nebyly nalezeny žádné ikony',
     loadingIcons: 'Načítám ikony...',
-    loadError: 'Nepodařilo se načíst ikony'
+    loadError: 'Nepodařilo se načíst ikony',
+    id: 'ID',
+    advisoryTitle: 'Pomocný titulek',
+    ariaLabel: 'Popis pro čtečky (aria-label)',
+    tabindex: 'Pořadí prvku (tabindex)'
 });
