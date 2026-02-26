@@ -287,10 +287,26 @@ CKEDITOR.dialog.add( 'wjbuttonDialog', function( editor ) {
 			var selection = editor.getSelection();
 			var element = selection.getStartElement();
 
+			//set default state
+			this.hasBaseClass = true;
+			this.getContentElement('tab-basic', 'size').getElement().show();
+			this.getContentElement('tab-basic', 'buttonType').getElement().show();
+
 			if (typeof ckEditorInstance.lastWjButton != "undefined" && ckEditorInstance.lastWjButton != null)
 			{
 				element = new CKEDITOR.dom.element(ckEditorInstance.lastWjButton);
                 ckEditorInstance.lastWjButton = null;
+
+				//check if A has baseClass
+				var baseClass = editor.config.webjetformbutton.baseClass;
+				if (element.hasClass(baseClass)==false)
+				{
+					this.hasBaseClass = false;
+
+					//hide buttonSize and buttonType if no baseClass
+					this.getContentElement('tab-basic', 'size').getElement().hide();
+					this.getContentElement('tab-basic', 'buttonType').getElement().hide();
+				}
 			}
 
 			if ( !element ) {
@@ -314,12 +330,17 @@ CKEDITOR.dialog.add( 'wjbuttonDialog', function( editor ) {
 			var simple_btn = this.element;
 			this.commitContent( simple_btn );
 
-            var buttonSize = dialog.getValueOf('tab-basic', 'size');
-            var buttonBtnType = dialog.getValueOf('tab-basic', 'buttonType');
-            var customClass = dialog.getValueOf('tab-advanced', 'customClass');
+			if (this.hasBaseClass === true) {
+				var buttonSize = dialog.getValueOf('tab-basic', 'size');
+				var buttonBtnType = dialog.getValueOf('tab-basic', 'buttonType');
+				var customClass = dialog.getValueOf('tab-advanced', 'customClass');
 
-			var classes = buildButtonClasses(buttonSize, buttonBtnType, customClass);
-			simple_btn.setAttribute('class', classes);
+				var classes = buildButtonClasses(buttonSize, buttonBtnType, customClass);
+				simple_btn.setAttribute('class', classes);
+			} else {
+				var customClass = dialog.getValueOf('tab-advanced', 'customClass');
+				simple_btn.setAttribute('class', customClass);
+			}
 
 			if ( this.insertMode )
 				editor.insertElement( simple_btn );

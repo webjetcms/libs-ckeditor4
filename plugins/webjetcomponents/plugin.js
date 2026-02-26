@@ -890,9 +890,12 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
 		    	//console.log("CLICK 2 evt=", evt);
 				if (element.tagName=="A")
 				{
-					//pre display block alebo inline-block tiez musime zobrazit editor
 					var baseClass = editor.config.webjetformbutton.baseClass;
-					if (element.className.indexOf(baseClass)!=-1)
+					//pre display block alebo inline-block tiez musime zobrazit editor - ckeditor nevie oznacit text
+					var displayStyle = window.getComputedStyle(element, null).getPropertyValue("display");
+					if (displayStyle == null) displayStyle = "";
+
+					if (element.className.indexOf(baseClass)!=-1 || displayStyle.indexOf("block")!=-1)
 					{
 						ckEditorInstance.lastWjButton = element;
 						setTimeout(function () {
