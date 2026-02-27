@@ -137,7 +137,12 @@
 			}, null, null, 0 );
 
 			// Hide the box on mouseout if mouse leaves document.
-			editable.attachListener( that.inInlineMode ? doc : doc.getWindow().getFrame(), 'XXXmouseout', function( event ) {
+			editable.attachListener( that.inInlineMode ? doc : doc.getWindow().getFrame(), 'blur', function( event ) {
+				clearTimeout( checkMouseTimer );
+				checkMouseTimer = null;
+				that.line.detach();
+			} );
+			editable.attachListener( that.inInlineMode ? doc : doc.getWindow().getFrame(), 'mouseout', function( event ) {
 				if ( editor.mode != 'wysiwyg' )
 					return;
 
@@ -247,7 +252,7 @@
 			// and don't reveal it until the mouse is released.
 			// It is to prevent box insertion e.g. while scrolling
 			// (w/ scrollbar), selecting and so on.
-			editable.attachListener( env_ie8 ? doc : win, 'mousedown', function() {
+			editable.attachListener( win, 'mousedown', function() {
 				if ( editor.mode != 'wysiwyg' )
 					return;
 
@@ -261,7 +266,7 @@
 			// Google Chrome doesn't trigger this on the scrollbar (since 2009...)
 			// so it is totally useless to check for scroll finish
 			// see: http://code.google.com/p/chromium/issues/detail?id=14204
-			editable.attachListener( env_ie8 ? doc : win, 'mouseup', function() {
+			editable.attachListener( win, 'mouseup', function() {
 				that.hiddenMode = 0;
 				that.mouseDown = 0;
 				that.debug.showHidden( that.hiddenMode ); // %REMOVE_LINE%
@@ -363,7 +368,6 @@
 		newElement = CKEDITOR.dom.element,
 		newElementFromHtml = newElement.createFromHtml,
 		env = CKEDITOR.env,
-		env_ie8 = CKEDITOR.env.ie && CKEDITOR.env.version < 9,
 		dtd = CKEDITOR.dtd,
 
 		// Global object associating enter modes with elements.
@@ -389,7 +393,7 @@
 		CACHE_TIME = 100,
 
 		// Shared CSS stuff for box elements
-		CSS_COMMON = 'width:0px;height:0px;padding:0px;margin:0px;display:block;' + 'z-index:1010020;color:#fff;position:absolute;font-size: 0px;line-height:0px;',
+		CSS_COMMON = 'width:0px;height:0px;padding:0px;margin:0px;display:block;' + 'z-index:101020;color:#fff;position:absolute;font-size: 0px;line-height:0px;',
 		CSS_TRIANGLE = CSS_COMMON + 'border-color:transparent;display:block;border-style:solid;',
 		TRIANGLE_HTML = '<span class="wjmagiclineTriangle">' + WHITE_SPACE + '</span>';
 
@@ -461,15 +465,6 @@
 			if ( !( element && element.type == CKEDITOR.NODE_ELEMENT && element.$ ) )
 				return null;
 
-			// Also return nothing if:
-			//	\-> We're IE<9 and element is out of the top-level element (editable for inline and HTML for classic (`iframe`-based)).
-			//		This is due to the bug which allows IE<9 firing mouse events on element
-			//		with contenteditable=true while doing selection out (far, away) of the element.
-			//		Thus we must always be sure that we stay in editable or HTML.
-			if ( env.ie && env.version < 9 ) {
-				if ( !( that.boundary.equals( element ) || that.boundary.contains( element ) ) )
-					return null;
-			}
 
 			return element;
 		};
