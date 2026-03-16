@@ -361,7 +361,6 @@
 			inputBox.data('element', element);
 
 			inputBox.find('.allInputBox input').prop('checked', false);
-			$.uniform.update();
 			inputBox.find('.allInputBox').show();
 
 			if (isBorder) {
