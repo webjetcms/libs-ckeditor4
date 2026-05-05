@@ -25,34 +25,8 @@ CKEDITOR.plugins.add('webjetsvgicon', {
             }
         });
 
-        // Ensure cursor can be placed after any inline element (SVG, SPAN, etc.)
-        // that is the last child of a block. appendBogus() adds a <br> that acts
-        // as a cursor target; htmldataprocessor.cleanBogus() strips it on getData().
         var blockTags = { p: 1, div: 1, h1: 1, h2: 1, h3: 1, h4: 1, h5: 1, h6: 1,
                           li: 1, td: 1, th: 1, blockquote: 1, pre: 1, address: 1 };
-
-        function ensureBlockFiller( editable ) {
-            var blocks = editable.find( Object.keys( blockTags ).join( ',' ) );
-            for ( var i = 0; i < blocks.count(); i++ ) {
-                var block = blocks.getItem( i );
-                var last = block.getLast();
-                // Skip trailing whitespace-only text nodes to find the real last child
-                while ( last && last.type === CKEDITOR.NODE_TEXT &&
-                        !CKEDITOR.tools.rtrim( last.getText() ) ) {
-                    last = last.getPrevious();
-                }
-                // If the last meaningful child is an element (not already a <br>),
-                // add a bogus <br> so the browser can place a cursor after it.
-                if ( last && last.type === CKEDITOR.NODE_ELEMENT && !last.is( 'br' ) ) {
-                    block.appendBogus();
-                }
-            }
-        }
-
-        // Re-run on any content change (backspace, delete, paste, etc.)
-        editor.on( 'change', function() {
-            ensureBlockFiller( editor.editable() );
-        } );
 
         // Returns true if element is an inline element AND the last meaningful
         // direct child of its parent block (ignoring trailing whitespace / bogus BR).
@@ -120,19 +94,18 @@ CKEDITOR.plugins.add('webjetsvgicon', {
         }
 
         editor.on( 'contentDom', function() {
-            ensureBlockFiller( editor.editable() );
-
 		   var editable = editor.editable();
 		   var doc = editor.document;
 
 		   // --- Hover indicator: shown next to block-terminal inline elements ---
 		   // Remove any stale indicator from a previous contentDom cycle.
-		   var staleInd = doc.getById( 'wj-inline-exit-ind' );
+           var wjInlineExitIndID = 'wj-inline-exit-ind-'+editor.id;
+		   var staleInd = doc.getById( wjInlineExitIndID );
 		   if ( staleInd ) staleInd.remove();
 
 		   var indicator = new CKEDITOR.dom.element( 'span', doc );
 		   indicator.setAttributes( {
-		       id: 'wj-inline-exit-ind',
+		       id: wjInlineExitIndID,
 		       contenteditable: 'false',
 		       'data-cke-temp': '1',
 		       title: ( editor.lang.webjetsvgicon && editor.lang.webjetsvgicon.insertAfterLabel ) || '→'
@@ -141,15 +114,16 @@ CKEDITOR.plugins.add('webjetsvgicon', {
 		       display: 'none',
 		       position: 'absolute',
 		       cursor: 'pointer',
-		       background: '#fceba9',
-		       border: '1px solid #ccc',
-		       'border-radius': '2px',
+		       background: '#F7CA18',
+		       border: '1px solid #F7CA18',
+		       'border-radius': '6px',
 		       padding: '0 5px',
-		       'font-size': '13px',
-		       'line-height': '18px',
+		       'font-size': '17px',
+		       'line-height': '16px',
 		       'z-index': '10100',
 		       '-webkit-user-select': 'none',
-		       'user-select': 'none'
+		       'user-select': 'none',
+               'font-weight': 'bold',
 		   } );
 		   indicator.setHtml( '&#x21E5;' ); // ⇥
 		   doc.getBody().append( indicator );
@@ -262,10 +236,5 @@ CKEDITOR.plugins.add('webjetsvgicon', {
 		   });
 		});
 
-        // Re-run after paste / insertHtml so pasted blocks ending with inline
-        // elements also get a bogus filler.
-        editor.on( 'afterInsertHtml', function() {
-            ensureBlockFiller( editor.editable() );
-        } );
     }
 });
