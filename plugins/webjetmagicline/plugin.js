@@ -45,47 +45,6 @@
             editor.focus();
         }
 
-        // If cursor is at the very end of a chain of block-terminal inline elements,
-        // return the outermost direct-child-of-block element. Otherwise returns null.
-        function getBlockTerminalInlineAtCursorEnd() {
-            var sel = editor.getSelection();
-            if ( !sel ) return null;
-            var ranges = sel.getRanges();
-            if ( !ranges[ 0 ] || !ranges[ 0 ].collapsed ) return null;
-
-            var range = ranges[ 0 ];
-            var container = range.startContainer;
-            var offset = range.startOffset;
-            var editable = editor.editable();
-            var node;
-
-            if ( container.type === CKEDITOR.NODE_TEXT ) {
-                if ( offset < container.getLength() ) return null;
-                node = container.getParent();
-            } else if ( container.type === CKEDITOR.NODE_ELEMENT ) {
-                if ( offset < container.getChildCount() ) return null;
-                node = container;
-            } else {
-                return null;
-            }
-
-            while ( node && !node.equals( editable ) ) {
-                if ( node.is( blockTags ) ) return null;
-                var parent = node.getParent();
-                if ( !parent ) return null;
-                if ( parent.is( blockTags ) ) {
-                    return isBlockTerminalInline( node ) ? node : null;
-                }
-                // Still inside a nested inline — check we are at the end of this parent too
-                var nextSib = node.getNext( function( n ) {
-                    return !( n.type === CKEDITOR.NODE_TEXT && !CKEDITOR.tools.rtrim( n.getText() ) );
-                } );
-                if ( nextSib ) return null;
-                node = parent;
-            }
-            return null;
-        }
-
 		editor.on( 'contentDom', function() {
 		   var editable = editor.editable();
 		   var doc = editor.document;
@@ -170,16 +129,6 @@
 		       }
 		       clearTimeout( hideIndicatorTimer );
 		       hideIndicatorTimer = setTimeout( hideIndicator, 200 );
-		   } );
-
-		   // RIGHT ARROW: escape block-terminal inline element when cursor is at its end
-		   editable.attachListener( editable, 'keydown', function( evt ) {
-		       if ( evt.data.$.keyCode !== 39 ) return; // RIGHT arrow only
-		       var inlineEl = getBlockTerminalInlineAtCursorEnd();
-		       if ( inlineEl ) {
-		           evt.data.$.preventDefault();
-		           exitInlineElement( inlineEl );
-		       }
 		   } );
 		} );
 	}
