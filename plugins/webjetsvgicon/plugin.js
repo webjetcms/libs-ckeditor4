@@ -151,7 +151,9 @@ CKEDITOR.plugins.add('webjetsvgicon', {
 		       hideIndicatorTimer = setTimeout( hideIndicator, 200 );
 		   } );
 
-		   // Show indicator when hovering over a block-terminal inline element
+		   // Show indicator when hovering over a block-terminal inline element.
+		   // Also handles the case where pointer-events:none on the inline element
+		   // (e.g. SVG icons) causes mouse events to fire on the parent block instead.
 		   editable.attachListener( editable, 'mousemove', function( evt ) {
 		       var target = evt.data.$.target;
 		       if ( !target ) return;
@@ -159,15 +161,15 @@ CKEDITOR.plugins.add('webjetsvgicon', {
 
 		       var node = new CKEDITOR.dom.element( target );
 		       while ( node && !node.equals( editable ) ) {
-		           if ( node.is( blockTags ) ) { break; }
 		           if ( isBlockTerminalInline( node ) ) {
 		               clearTimeout( hideIndicatorTimer );
 		               indicatorTarget = node;
 		               var pos = node.getDocumentPosition( doc );
+		               var bcr = node.$.getBoundingClientRect();
 		               indicator.setStyles( {
 		                   display: 'inline-block',
-		                   top: ( pos.y + Math.max( 0, Math.floor( ( node.$.offsetHeight - 18 ) / 2 ) ) ) + 'px',
-		                   left: ( pos.x + node.$.offsetWidth + 2 ) + 'px'
+		                   top: ( pos.y + Math.max( 0, Math.floor( ( bcr.height - 18 ) / 2 ) ) ) + 'px',
+		                   left: ( pos.x + bcr.width + 2 ) + 'px'
 		               } );
 		               return;
 		           }
