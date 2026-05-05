@@ -9,5 +9,6 @@ CKEDITOR.plugins.setLang( 'webjetmagicline', 'en', {
 	text: 'Text',
 	image: 'Image',
 	app: 'App',
-	temp: 'Block'
+	temp: 'Block',
+    insertAfterLabel: 'Insert text after this element'
 } );

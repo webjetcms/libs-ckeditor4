@@ -16,6 +16,5 @@ CKEDITOR.plugins.setLang('webjetsvgicon', 'en', {
     loadError: 'Error loading icons',
     noIconsFound: 'No icons found matching the current filters.',
     noIconSelected: 'Please select an icon before proceeding.',
-    deleteConfirm: 'Do you really want to delete this icon?',
-    insertAfterLabel: 'Insert text after this element'
+    deleteConfirm: 'Do you really want to delete this icon?'
 });

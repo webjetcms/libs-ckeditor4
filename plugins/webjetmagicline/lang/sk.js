@@ -9,5 +9,6 @@ CKEDITOR.plugins.setLang( 'webjetmagicline', 'sk', {
 	text: 'Text',
 	image: 'Obrázok',
 	app: 'Aplikácia',
-	temp: 'Blok'
+	temp: 'Blok',
+    insertAfterLabel: 'Vložiť text za tento element'
 } );
