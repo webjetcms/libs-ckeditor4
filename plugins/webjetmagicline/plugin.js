@@ -55,52 +55,75 @@
 		   var staleInd = doc.getById( wjInlineExitIndID );
 		   if ( staleInd ) staleInd.remove();
 
-		   var indicator = new CKEDITOR.dom.element( 'span', doc );
-		   indicator.setAttributes( {
-		       id: wjInlineExitIndID,
-		       contenteditable: 'false',
-		       'data-cke-temp': '1',
-		       title: ( editor.lang.webjetmagicline && editor.lang.webjetmagicline.insertAfterLabel ) || '→'
-		   } );
-		   indicator.setStyles( {
-		       display: 'none',
-		       position: 'absolute',
-		       cursor: 'pointer',
-		       background: '#F7CA18',
-		       border: '1px solid #F7CA18',
-		       'border-radius': '6px',
-		       padding: '0 5px',
-		       'font-size': '17px',
-		       'line-height': '16px',
-		       'z-index': '10100',
-		       '-webkit-user-select': 'none',
-		       'user-select': 'none',
-               'font-weight': 'bold',
-		   } );
-		   indicator.setHtml( '&#x21E5;' ); // ⇥
-		   doc.getBody().append( indicator );
-
+		   // indicator is created and appended lazily, only when first needed for display.
+		   var indicator = null;
 		   var indicatorTarget = null;
 		   var hideIndicatorTimer = null;
 
+		   function createIndicator() {
+		       indicator = new CKEDITOR.dom.element( 'span', doc );
+		       indicator.setAttributes( {
+		           id: wjInlineExitIndID,
+		           contenteditable: 'false',
+		           'data-cke-temp': '1',
+		           title: ( editor.lang.webjetmagicline && editor.lang.webjetmagicline.insertAfterLabel ) || '→'
+		       } );
+		       indicator.setStyles( {
+		           display: 'none',
+		           position: 'absolute',
+		           cursor: 'pointer',
+		           background: '#F7CA18',
+		           border: '1px solid #F7CA18',
+		           'border-radius': '6px',
+		           padding: '0 5px',
+		           'font-size': '17px',
+		           'line-height': '16px',
+		           'z-index': '10100',
+		           '-webkit-user-select': 'none',
+		           'user-select': 'none',
+		           'font-weight': 'bold',
+		       } );
+		       indicator.setHtml( '&#x21E5;' ); // ⇥
+
+		       indicator.on( 'mousedown', function( evt ) {
+		           evt.data.$.preventDefault();
+		           if ( indicatorTarget ) {
+		               exitInlineElement( indicatorTarget );
+		               hideIndicator();
+		           }
+		       } );
+		       indicator.on( 'mouseover', function() {
+		           clearTimeout( hideIndicatorTimer );
+		       } );
+		       indicator.on( 'mouseout', function() {
+		           hideIndicatorTimer = setTimeout( hideIndicator, 200 );
+		       } );
+		   }
+
+		   function ensureIndicatorInDom() {
+		       if ( !indicator ) {
+		           createIndicator();
+		       }
+		       if ( !indicator.getParent() ) {
+		           doc.getBody().append( indicator );
+		       }
+		   }
+
 		   function hideIndicator() {
 		       clearTimeout( hideIndicatorTimer );
-		       indicator.setStyle( 'display', 'none' );
+		       if ( indicator ) {
+		           indicator.setStyle( 'display', 'none' );
+		       }
 		       indicatorTarget = null;
 		   }
 
-		   indicator.on( 'mousedown', function( evt ) {
-		       evt.data.$.preventDefault();
-		       if ( indicatorTarget ) {
-		           exitInlineElement( indicatorTarget );
-		           hideIndicator();
-		       }
-		   } );
-		   indicator.on( 'mouseover', function() {
+		   // Remove indicator from DOM before getData to prevent it from polluting the output HTML.
+		   editable.attachListener( editor, 'beforeGetData', function() {
 		       clearTimeout( hideIndicatorTimer );
-		   } );
-		   indicator.on( 'mouseout', function() {
-		       hideIndicatorTimer = setTimeout( hideIndicator, 200 );
+		       if ( indicator && indicator.getParent() ) {
+		           indicator.remove();
+		       }
+		       indicatorTarget = null;
 		   } );
 
 		   // Show indicator when hovering over a block-terminal inline element.
@@ -109,12 +132,13 @@
 		   editable.attachListener( editable, 'mousemove', function( evt ) {
 		       var target = evt.data.$.target;
 		       if ( !target ) return;
-		       if ( target === indicator.$ || indicator.$.contains( target ) ) return;
+		       if ( indicator && ( target === indicator.$ || indicator.$.contains( target ) ) ) return;
 
 		       var node = new CKEDITOR.dom.element( target );
 		       while ( node && !node.equals( editable ) ) {
 		           if ( isBlockTerminalInline( node ) ) {
 		               clearTimeout( hideIndicatorTimer );
+		               ensureIndicatorInDom();
 		               indicatorTarget = node;
 		               var pos = node.getDocumentPosition( doc );
 		               var bcr = node.$.getBoundingClientRect();
@@ -130,6 +154,7 @@
 		       clearTimeout( hideIndicatorTimer );
 		       hideIndicatorTimer = setTimeout( hideIndicator, 200 );
 		   } );
+
 		} );
 	}
 
