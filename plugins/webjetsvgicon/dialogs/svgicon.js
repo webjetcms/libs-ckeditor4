@@ -504,10 +504,21 @@ CKEDITOR.dialog.add('svgiconDialog', function(editor) {
             var svgElement = editor.document.find('.svg-icon-selected');
             if (svgElement && svgElement.$.length == 1) {
                 svgElement = svgElement.$[0];
+                var parentCK = new CKEDITOR.dom.element( svgElement.parentNode );
                 svgElement.outerHTML = svgHtml;
+                // Ensure cursor can be placed after the updated SVG at end-of-block
+                if ( parentCK ) {
+                    parentCK.appendBogus();
+                }
+                editor.fire( 'change' );
             } else {
                 var newElement = CKEDITOR.dom.element.createFromHtml(svgHtml);
                 editor.insertElement(newElement);
+                // Ensure cursor can be placed after the inserted SVG at end-of-block
+                var parentBlock = newElement.getParent();
+                if ( parentBlock ) {
+                    parentBlock.appendBogus();
+                }
             }
         }
     };

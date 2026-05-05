@@ -25,7 +25,33 @@ CKEDITOR.plugins.add('webjetsvgicon', {
             }
         });
 
+        // Ensure cursor can be placed after any inline element (SVG, SPAN, etc.)
+        // that is the last child of a block. appendBogus() adds a <br> that acts
+        // as a cursor target; htmldataprocessor.cleanBogus() strips it on getData().
+        var blockTags = { p: 1, div: 1, h1: 1, h2: 1, h3: 1, h4: 1, h5: 1, h6: 1,
+                          li: 1, td: 1, th: 1, blockquote: 1, pre: 1, address: 1 };
+
+        function ensureBlockFiller( editable ) {
+            var blocks = editable.find( Object.keys( blockTags ).join( ',' ) );
+            for ( var i = 0; i < blocks.count(); i++ ) {
+                var block = blocks.getItem( i );
+                var last = block.getLast();
+                // Skip trailing whitespace-only text nodes to find the real last child
+                while ( last && last.type === CKEDITOR.NODE_TEXT &&
+                        !CKEDITOR.tools.rtrim( last.getText() ) ) {
+                    last = last.getPrevious();
+                }
+                // If the last meaningful child is an element (not already a <br>),
+                // add a bogus <br> so the browser can place a cursor after it.
+                if ( last && last.type === CKEDITOR.NODE_ELEMENT && !last.is( 'br' ) ) {
+                    block.appendBogus();
+                }
+            }
+        }
+
         editor.on( 'contentDom', function() {
+            ensureBlockFiller( editor.editable() );
+
 		   var editable = editor.editable();
 		   editable.attachListener( editable, 'mousedown', function(evt) {
                 try {
@@ -75,5 +101,11 @@ CKEDITOR.plugins.add('webjetsvgicon', {
                 }
 		   });
 		});
+
+        // Re-run after paste / insertHtml so pasted blocks ending with inline
+        // elements also get a bogus filler.
+        editor.on( 'afterInsertHtml', function() {
+            ensureBlockFiller( editor.editable() );
+        } );
     }
 });
