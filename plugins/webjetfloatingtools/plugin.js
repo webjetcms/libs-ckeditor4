@@ -537,9 +537,7 @@
 
 				editor.floatingtools = new floatingtools();
 
-				var labelId = CKEDITOR.tools.getNextId();
-
-				var output = [
+					var output = [
 					// Did not find a nicer way to include the CSS required for the toolbar...
 					'<style>',
 					'.pos-relative {position:relative}',
@@ -555,8 +553,7 @@
 						'transition:opacity .1s;-o-transition:opacity .1s;-moz-transition:opacity .1s;-webkit-transition:opacity .1s;',
 					'}',
 					'</style>',
-					'<span id="', labelId, '" class="cke_voice_label">', editor.lang.toolbar.toolbars, '</span>',
-					'<span id="' + editor.ui.spaceId( 'floatingtools' ) + '" class="cke_floatingtools cke_top" role="group" aria-labelledby="', labelId, '" onmousedown="return false;">' ];
+					'<span id="' + editor.ui.spaceId( 'floatingtools' ) + '" class="cke_floatingtools cke_top" role="presentation" aria-hidden="true" onmousedown="return false;">' ];
 
 				//console.log("wjft: uiSpace, labelId="+labelId+" spaceId="+editor.ui.spaceId( 'floatingtools' ));
 
