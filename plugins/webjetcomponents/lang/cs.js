@@ -86,6 +86,20 @@ try {
 		title: "Název",
 		btnSendByAjax: "Odeslat přes AJAX (formulář se odešle na pozadí bez obnovení stránky, není ale možné odesílat fotografie)",
 		btnSubmit: "Odeslat",
-		printPage: "Vytisknout"
+		printPage: "Vytisknout",
+
+		thumbTabTitle: "Miniatura",
+		thumbWidth: "Šířka",
+		thumbHeight: "Výška",
+		thumbIpMode: "Režim",
+		thumbIp1: "Fixní šířka",
+		thumbIp2: "Fixní výška",
+		thumbIp3: "Fixní šířka a výška vyplněná barvou",
+		thumbIp4: "Fixní šířka a výška vyplněná barvou - centrováno",
+		thumbIp5: "Centrovaný s poměrem stran - zmenšen",
+		thumbBackgroundColor: "Barva pozadí",
+		thumbNoIp: "Vypnout bod zájmu",
+		thumbWidthRequired: "Šířka je povinná pro tento režim",
+		thumbHeightRequired: "Výška je povinná pro tento režim"
 	});
 } catch (e) {}

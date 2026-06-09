@@ -76,6 +76,10 @@ CKEDITOR.plugins.setLang( 'toolbar', 'sk', {
 	}
 });
 
+CKEDITOR.plugins.setLang( 'thumb', 'sk', {
+
+});
+
 try {
 	//WebJET 9 preklady
 	CKEDITOR.plugins.setLang( 'webjetadmin', 'sk', {
@@ -86,6 +90,20 @@ try {
 		title: "Názov",
 		btnSendByAjax: "Odoslať cez AJAX (formulár sa odošle na pozadí bez obnovenia stránky, nie je ale možné odosielať súbory)",
 		btnSubmit: "Odoslať",
-		printPage: "Vytlačiť"
+		printPage: "Vytlačiť",
+
+		thumbTabTitle: "Miniatúra",
+		thumbWidth: "Šírka",
+		thumbHeight: "Výška",
+		thumbIpMode: "Režim",
+		thumbIp1: "Fixná šírka",
+		thumbIp2: "Fixná výška",
+		thumbIp3: "Fixná šírka a výška vyplnená farbou",
+		thumbIp4: "Fixná šírka a výška vyplnená farbou - centrované",
+		thumbIp5: "Centrovaný s pomerom strán - zmenšený",
+		thumbBackgroundColor: "Farba pozadia",
+		thumbNoIp: "Vypnúť bod záujmu",
+		thumbWidthRequired: "Šírka je povinná pre tento režim",
+		thumbHeightRequired: "Výška je povinná pre tento režim"
 	});
 } catch (e) {}

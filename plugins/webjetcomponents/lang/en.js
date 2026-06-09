@@ -86,6 +86,20 @@ try {
 		title: "Title",
 		btnSendByAjax: "Send by AJAX (form will be sent in background withou page refresh, but it's not possible to send photo)",
 		btnSubmit: "Submit",
-		printPage: "Print"
+		printPage: "Print",
+
+		thumbTabTitle: "Thumbnail",
+		thumbWidth: "Width",
+		thumbHeight: "Height",
+		thumbIpMode: "Mode",
+		thumbIp1: "Fixed Width",
+		thumbIp2: "Fixed Height",
+		thumbIp3: "Fixed Width and Height Filled with Color",
+		thumbIp4: "Fixed Width and Height Filled with Color - Centered",
+		thumbIp5: "Centered with Aspect Ratio - Scaled",
+		thumbBackgroundColor: "Background Color",
+		thumbNoIp: "Disable Point of Interest",
+		thumbWidthRequired: "Width is required for this mode",
+		thumbHeightRequired: "Height is required for this mode"
 	});
 } catch (e) {}
