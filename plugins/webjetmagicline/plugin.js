@@ -61,7 +61,7 @@
 		   var hideIndicatorTimer = null;
 
 		   function createIndicator() {
-		       indicator = new CKEDITOR.dom.element( 'span', doc );
+		       indicator = new CKEDITOR.dom.element( 'div', doc );
 		       indicator.setAttributes( {
 		           id: wjInlineExitIndID,
 		           contenteditable: 'false',
@@ -119,12 +119,64 @@
 
 		   // Remove indicator from DOM before getData to prevent it from polluting the output HTML.
 		   editable.attachListener( editor, 'beforeGetData', function() {
-		       clearTimeout( hideIndicatorTimer );
-		       if ( indicator && indicator.getParent() ) {
-		           indicator.remove();
-		       }
-		       indicatorTarget = null;
-		   } );
+				try {
+					clearTimeout( hideIndicatorTimer );
+					if ( indicator && indicator.getParent() ) {
+						indicator.remove();
+					}
+
+					// Remove by ID from the currently active editable/document as a fallback
+					// in case the local closure references became stale.
+					var liveEditable = editor.editable();
+					var liveDoc = editor.document;
+
+					if ( liveEditable ) {
+						var editableIndicator = liveEditable.findOne( '#' + wjInlineExitIndID );
+						if ( editableIndicator ) {
+							editableIndicator.remove();
+						}
+					}
+
+					if ( liveDoc ) {
+						var domIndicator = liveDoc.getById( wjInlineExitIndID );
+						if ( domIndicator ) {
+							domIndicator.remove();
+						}
+
+						// Extra safety: remove any temp inline-exit indicators left in the document.
+						var spans = liveDoc.getElementsByTag( 'span' );
+						for ( var i = spans.count(); i--; ) {
+							var span = spans.getItem( i );
+							var spanId = span.getId();
+							if ( spanId && spanId.indexOf( 'wj-inline-exit-ind-' ) === 0 && span.getAttribute( 'data-cke-temp' ) == '1' ) {
+								span.remove();
+							}
+						}
+
+						var divs = liveDoc.getElementsByTag( 'div' );
+						for ( var j = divs.count(); j--; ) {
+							var div = divs.getItem( j );
+							var divId = div.getId();
+							if ( divId && divId.indexOf( 'wj-inline-exit-ind-' ) === 0 && div.getAttribute( 'data-cke-temp' ) == '1' ) {
+								div.remove();
+							}
+						}
+					}
+
+					// In inline mode the marker may exist in the host page document.
+					var hostDoc = CKEDITOR.document;
+					if ( hostDoc ) {
+						var hostIndicator = hostDoc.getById( wjInlineExitIndID );
+						if ( hostIndicator ) {
+							hostIndicator.remove();
+						}
+					}
+
+					indicatorTarget = null;
+				} catch ( e ) {
+					console.error( 'Error in webjetmagicline beforeGetData handler', e );
+				}
+		   }, null, null, 0 );
 
 		   // Show indicator when hovering over a block-terminal inline element.
 		   // Also handles the case where pointer-events:none on the inline element
