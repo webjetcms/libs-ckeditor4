@@ -925,6 +925,21 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
 
 		//Delete Element
 		var deleteElementData = null;
+		var deleteElementHighlighted = null;
+
+		function highlightDeleteElement( element ) {
+			removeDeleteElementHighlight();
+			if ( !element ) return;
+			deleteElementHighlighted = element;
+			element.addClass( 'cke-wj-delete-highlight' );
+		}
+
+		function removeDeleteElementHighlight() {
+			if ( deleteElementHighlighted ) {
+				deleteElementHighlighted.removeClass( 'cke-wj-delete-highlight' );
+				deleteElementHighlighted = null;
+			}
+		}
 
 		// List of elements that can be deleted
 		var deletableElements = {
@@ -947,6 +962,7 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
 
 		editor.addCommand( 'deleteElement', {
 			exec: function( editor ) {
+				removeDeleteElementHighlight();
 				if ( deleteElementData ) {
 					deleteElementData.remove();
 					deleteElementData = null;
@@ -964,7 +980,15 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
 			});
 
 			editor.contextMenu.addListener( function( element ) {
-				if ( !element || element.isReadOnly() )
+				//console.log("Context menu listener, element=", element, "isReadOnly=", element.isReadOnly());
+
+				//<span aria-describedby="webjet-tooltip-cke_147" aria-owns="webjet-tooltip-cke_147" class="info-tooltip" data-tooltip-trigger="true"><svg aria-hidden="true" class="icon info-tooltip__icon is-light"><use xlink:href="/templates/orange/orange-web/dist/assets/sprite.svg#assistance"></use></svg><span class="sr-only" contenteditable="false">Info</span></span><span class="tooltip" data-tooltip="true" hidden="" id="webjet-tooltip-cke_147" role="tooltip"><span class="tooltip__arrow"></span><span class="tooltip__dialog">dsfgsdg</span></span>
+				if (element && element.isReadOnly()) {
+					//get parent element and check if it is deletable
+					element = element.getParent();
+				}
+
+				if ( !element )
 					return null;
 
 				var tagName = element.$.tagName;
@@ -973,11 +997,24 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
 					if (element.$.className && element.$.className.indexOf("pb-tooltip")!=-1) return null;
 
 					deleteElementData = element;
+					highlightDeleteElement( element );
 					return { deleteElementItem: CKEDITOR.TRISTATE_OFF };
 				}
+				removeDeleteElementHighlight();
 				return null;
 			});
+
+			// CKEDITOR.menu.hide() calls onHide before hiding the panel
+			var _origContextMenuOnHide = editor.contextMenu.onHide;
+			editor.contextMenu.onHide = function() {
+				removeDeleteElementHighlight();
+				if ( _origContextMenuOnHide ) _origContextMenuOnHide.call( this );
+			};
 		}
+
+		editor.on( 'contentDom', function() {
+			editor.editable().attachListener( editor, 'beforeGetData', removeDeleteElementHighlight, null, null, 0 );
+		} );
 
 		if (getAiButtonReal(editor)!=null) {
 			editor.addCommand( 'aibutton', {
