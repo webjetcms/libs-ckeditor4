@@ -15,20 +15,22 @@
 
 CKEDITOR.dialog.add( 'wjbuttonDialog', function( editor ) {
 
-	var config = editor.config.webjetsvgicon || {};
+	var config = editor.config.webjetformbutton || {};
     var sizes = (config.sizes || 'btn-lg,btn-sm').split(',');
 
     // Get base class from webjetformbutton config if exists, otherwise use 'btn'
-    var baseClass = editor.config.webjetformbutton.baseClass;
-    var buttonTypes = (editor.config.webjetformbutton && editor.config.webjetformbutton.types)
-        ? editor.config.webjetformbutton.types.split(',')
+    var baseClass = config.baseClass;
+    var buttonTypes = (config && config.types)
+        ? config.types.split(',')
         : ['btn-primary', 'btn-secondary', 'btn-success', 'btn-danger', 'btn-warning', 'btn-info', 'btn-light', 'btn-dark', 'btn-link', 'btn-outline-primary', 'btn-outline-secondary', 'btn-outline-success', 'btn-outline-danger', 'btn-outline-warning', 'btn-outline-info', 'btn-outline-light', 'btn-outline-dark'];
 
+	//add default value
 	var sizeItems = [[editor.lang.webjetformbutton.defaultSize, '']];
     sizes.forEach(function(size) {
         sizeItems.push([size, size]);
     });
 
+	//add default value
     var typeItems = [[editor.lang.webjetformbutton.defaultType, '']];
     buttonTypes.forEach(function(type) {
         typeItems.push([type, type]);
