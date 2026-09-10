@@ -92,6 +92,7 @@ try {
 		thumbWidth: "Šířka",
 		thumbHeight: "Výška",
 		thumbIpMode: "Režim",
+		thumbIp0: "Maximální rozměry",
 		thumbIp1: "Fixní šířka",
 		thumbIp2: "Fixní výška",
 		thumbIp3: "Fixní šířka a výška vyplněná barvou",
@@ -100,6 +101,9 @@ try {
 		thumbBackgroundColor: "Barva pozadí",
 		thumbNoIp: "Vypnout bod zájmu",
 		thumbWidthRequired: "Šířka je povinná pro tento režim",
-		thumbHeightRequired: "Výška je povinná pro tento režim"
+		thumbHeightRequired: "Výška je povinná pro tento režim",
+		allowedSize: "Povolený rozměr",
+		allowedSizeRequired: "Vyberte povolený rozměr miniatury",
+		thumbQuality: "Kvalita"
 	});
 } catch (e) {}

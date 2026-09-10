@@ -92,6 +92,7 @@ try {
 		thumbWidth: "Width",
 		thumbHeight: "Height",
 		thumbIpMode: "Mode",
+		thumbIp0: "Maximum size",
 		thumbIp1: "Fixed Width",
 		thumbIp2: "Fixed Height",
 		thumbIp3: "Fixed Width and Height Filled with Color",
@@ -100,6 +101,9 @@ try {
 		thumbBackgroundColor: "Background Color",
 		thumbNoIp: "Disable Point of Interest",
 		thumbWidthRequired: "Width is required for this mode",
-		thumbHeightRequired: "Height is required for this mode"
+		thumbHeightRequired: "Height is required for this mode",
+		allowedSize: "Allowed Size",
+		allowedSizeRequired: "Select an allowed thumbnail size",
+		thumbQuality: "Quality"
 	});
 } catch (e) {}
