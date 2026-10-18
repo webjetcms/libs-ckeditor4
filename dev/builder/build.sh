@@ -91,6 +91,7 @@ fi
 		printf "\n${RED}The build has been stopped. Please verify the eventual error messages above.${RESET_STYLE}\n"
 		exit 1
 	fi
+	exit 1
 }
 
 # Copy and build tests.
