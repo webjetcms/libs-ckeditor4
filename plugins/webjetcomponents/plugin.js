@@ -906,8 +906,14 @@ CKEDITOR.plugins.add( 'webjetcomponents', {
 				else if (element.tagName=="IMG")
 				{
 					if (element.className.indexOf('fixedSize')!=-1 || element.className.indexOf('w-100')!=-1 || element.className.indexOf('autoimg')!=-1) {
+						var image = evt.data.getTarget();
 						setTimeout(function () {
-								ckEditorInstance.execCommand('image');
+							if (editor.status !== 'ready' || !editable.contains(image) || image.isReadOnly()) return;
+
+							// Refocusing an inline editor can restore the caret from the previous click.
+							editor.focus();
+							editor.getSelection().selectElement(image);
+							editor.execCommand('image');
 						}, 10);
 					}
 				}
